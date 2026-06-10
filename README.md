@@ -127,53 +127,58 @@ GAMS applies DRY (Don't Repeat Yourself) principles throughout the entire codeba
 | Controller / Route separation | All entities | Business logic lives in controllers, not inline in route files — each controller function is written once and referenced by its route |
 | Consistent `try/catch` pattern | All controllers | Every async controller follows the same `try { ... } catch (err) { return next(err); }` pattern, keeping error forwarding consistent without repetition |
 
-## 3. Style Guide
 
-This project follows the **Airbnb JavaScript Style Guide** (`eslint-config-airbnb-base`), enforced via ESLint across all source files. ESLint is configured in `.eslintrc.json` at the project root and can be run at any time with:
+## 3. Code Style & Linting
+
+This project enforces a consistent code style across all files using ESLint for static analysis and Prettier for automatic formatting. Both tools are configured to work together without conflicts.
+
+### ESLint
+
+ESLint is configured using the modern flat config format (eslint.config.js), which is the default for ESLint 10 and Vite-generated projects. The configuration extends three rule sets:
+- **@eslint/js recommended** — enforces core JavaScript best practices, such as flagging undeclared variables and unreachable code.
+- **eslint-plugin-react-hooks recommended** — enforces the Rules of Hooks, ensuring useState, useEffect, and other hooks are called correctly and consistently.
+- **eslint-plugin-react-refresh** — prevents patterns that break Vite's Hot Module Replacement (HMR) during development.
+- **eslint-config-prettier **— disables all ESLint formatting rules that would conflict with Prettier, ensuring the two tools never produce contradictory output.
+
+The following custom rules are also applied:
+
+| Rule             | Level   | Purpose                                                         |
+| :--------------- | :------ | :-------------------------------------------------------------- |
+| `no-unused-vars` | Warning | Flags variables that are declared but never used                |
+| `no-console`     | Warning | Discourages leaving `console.log` statements in production code |
+
+To run the linter across the entire project:
 
 ```bash
 npm run lint
 ```
 
-Three rule overrides are applied on top of the Airbnb Base defaults:
+### Prettier
 
-| Rule | Setting | Justification |
-| --- | --- | --- |
-| `no-console` | `warn` | Permits startup log messages in `db.js` and `index.js` |
-| `no-underscore-dangle` | `off` | Permits MongoDB's `_id` field and intentionally unused `_next` parameters |
-| `no-unused-vars` | Ignores `_` prefix | Permits required-but-unused Express error handler parameters |
+Prettier is configured via .prettierrc with the following rules:
+| Rule            | Value   | Effect                                                              |
+| :-------------- | :------ | :------------------------------------------------------------------ |
+| `semi`          | `true`  | Semicolons are always added at the end of statements                |
+| `singleQuote`   | `true`  | Single quotes are used instead of double quotes                     |
+| `tabWidth`      | `2`     | Code is indented with 2 spaces                                      |
+| `trailingComma` | `"es5"` | Trailing commas are added where valid in ES5 (objects, arrays)      |
+| `printWidth`    | `100`   | Lines are wrapped at 100 characters                                 |
+| `endOfLine`     | `"lf"`  | Unix-style line endings are enforced for cross-platform consistency |
 
-All three rule overrides were introduced to address real constraints imposed by the tools and frameworks used in this project — MongoDB and Express — rather than to bypass style enforcement. This reflects professional development practice: a well-configured linter is not one that blindly applies every default rule, but one where each exception is deliberate, justified, and documented. Where a rule conflicted with a legitimate technical requirement, it was adjusted with a clear rationale recorded in `.eslintrc.json`.
+Prettier ignores node_modules/, dist/, and package-lock.json as defined in .prettierignore.
+To automatically format all source files:
+
+```bash
+npm run format
+```
 
 ## 4. Testing
 
-GAMS uses two complementary approaches to testing: **automated tests** written in code using Jest and Supertest, and **manual API tests** conducted using Insomnia.
+This project uses Vitest as the test runner, configured with the jsdom environment to simulate a browser DOM without requiring a real browser. React Testing Library (@testing-library/react) is used to render components and query the DOM, and @testing-library/jest-dom extends Vitest's matchers with readable assertions such as toBeInTheDocument(). Tests are located in the tests/ directory and can be run with npm test.
+The testing strategy follows a practical, component-focused approach as recommended for React front-end projects. Tests verify that key components and pages render correctly and contain the expected elements, without requiring complex mocking, end-to-end flows, or full code coverage. This keeps the test suite lightweight, fast, and maintainable. Examples of tests included in this project are confirming that the Login page renders without crashing and that interactive elements such as form inputs and buttons behave as expected when interacted with.
 
-### Automated Tests - Jest and Supertest
+![ Vitest Testing ](img/Vitest_LoginPage.test.png)
 
-Automated tests are located in `src/tests/` and are run using Jest as the test runner and Supertest to make real HTTP requests against the Express app without starting a live server.
-
-| Test File | Routes Tested | Tests |
-| --- | --- | --- |
-| `auth.test.js` | `POST /auth/register`, `POST /auth/login`, `POST /auth/logout` | 10 |
-| `item.test.js` | `GET /items`, `POST /items`, `GET /items/:id`, `POST /items/:id/reserve` | 8 |
-| `contract.test.js` | `GET /contracts`, `POST /contracts`, `GET /contracts/:id`, `POST /contracts/:id/accept` | 8 |
-| `watchlist.test.js` | `POST /watchlist`, `GET /watchlist`, `DELETE /watchlist/:id` | 9 |
-| **Total** | **13 route functions** | **35 tests** |
-
-![Automated Tests](img/GAMS_Backend_Test_Jest/jest_auth_contract_item_watchlist_test.png)
-
-These four entities were selected because they cover the full range of HTTP verbs (`GET`, `POST`, `DELETE`), both access levels (authenticated user and admin), and the most complex business logic in the application — including role-based access control, duplicate entry prevention, stock availability checks, and contract acceptance limits.
-
-Each test suite follows the same structure: a `beforeAll` block connects to the database and sets up test data, individual `describe` blocks group tests by route, and an `afterAll` block cleans up all test documents and disconnects from the database. This ensures tests are isolated, repeatable, and leave no residual data in the database.
-
-### Manual API Tests — Insomnia
-
-In addition to automated tests, all API endpoints were manually tested using Insomnia, a REST API client that allows HTTP requests to be sent directly to a running server and the responses to be inspected visually. All Screenshots of every test are saved in the img/GAMS_Backend_Tests_Insomnia/ directory.
-
-![Insomnia Tests - auth_POST_login_admin](img/GAMS_Backend_Tests_Insomnia/GAMS_TEST_auth_POST_login_admin_2026-05-31.png)
-
-The Insomnia tests demonstrate that each endpoint returns the correct HTTP status code, response body, and error messages under real conditions — including authenticated requests with JWT tokens, admin-only access attempts, duplicate entry handling, and not-found scenarios. While these tests are manual and require a human to run and interpret, they serve as visual evidence that the API behaves correctly end-to-end and complement the automated test suite.
 
 ## 5. Error Handling
 
