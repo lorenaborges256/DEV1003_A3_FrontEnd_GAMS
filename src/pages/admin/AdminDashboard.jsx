@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 
-function AdminDashboard( ) {
+function AdminDashboard() {
   return (
     <div>
       <h1>Admin Dashboard</h1>

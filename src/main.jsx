@@ -25,7 +25,6 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-
         {/* --- Auth routes --- */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -48,7 +47,6 @@ createRoot(document.getElementById('root')).render(
 
         {/* --- Redirect root to login --- */}
         <Route path="/" element={<LoginPage />} />
-
       </Routes>
     </BrowserRouter>
   </StrictMode>
