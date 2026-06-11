@@ -9,5 +9,5 @@ test('Login page renders without crashing', () => {
       <LoginPage />
     </MemoryRouter>
   );
-  expect(screen.getByText('Login Page')).toBeInTheDocument();
+  expect(screen.getByText('GAMS Login')).toBeInTheDocument();
 });

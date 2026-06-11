@@ -1,0 +1,85 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.header {
+  height: 70px;
+  background: white;
+  border-bottom: 1px solid color(border);
+  display: flex;
+  align-items: center; // This keeps everything centered vertically
+  justify-content: space-between;
+  padding: 0 spacing(lg);
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 240px; // Desktop default
+  z-index: 100;
+
+  @include tablet {
+    left: 0;
+  }
+  @include mobile {
+    left: 0;
+    height: 60px;
+    padding: 0 spacing(md);
+  }
+}
+
+.left {
+  display: flex;
+  align-items: center; // This is the key fix: keeps hamburger and brand on one line
+  gap: spacing(md);
+}
+
+.hamburger {
+  @include button-reset;
+  display: none;
+  font-size: 1.8rem; // Make it a bit bigger for easier tapping
+  line-height: 1;
+  color: color(primary);
+  @include mobile {
+    display: block;
+  }
+}
+
+.tabletNav {
+  display: none;
+  @include tablet {
+    display: block;
+  }
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .appName {
+    font-weight: bold;
+    color: color(primary);
+    font-size: 1.1rem;
+    line-height: 1.2;
+  }
+
+  .guildName {
+    font-size: 0.75rem;
+    color: #888;
+    line-height: 1;
+  }
+
+  @include mobile {
+    .appName {
+      display: block;
+    }
+
+    .guildName {
+      display: none;
+    }
+  }
+}
+
+.right {
+  display: flex;
+  gap: spacing(md);
+  font-size: 1.2rem;
+}
