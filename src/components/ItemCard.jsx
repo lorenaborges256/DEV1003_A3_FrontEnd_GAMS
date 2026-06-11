@@ -1,4 +1,4 @@
-function ItemCard({ item }) {
+function ItemCard({ item, onViewDetails, onReserve, onWatch }) {
   const isAvailable = item.stockQuantity > 0;
 
   return (
@@ -13,6 +13,20 @@ function ItemCard({ item }) {
         <span className={`badge ${isAvailable ? 'badge-available' : 'badge-unavailable'}`}>
           {isAvailable ? 'Available' : 'Currently Unavailable'}
         </span>
+        <div className="card-actions">
+          <button type="button" onClick={() => onViewDetails(item._id)}>
+            View Details
+          </button>
+          {isAvailable ? (
+            <button type="button" onClick={() => onReserve(item._id)}>
+              Reserve
+            </button>
+          ) : (
+            <button type="button" onClick={() => onWatch(item._id)}>
+              Watch
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
