@@ -1,0 +1,66 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.navLinks {
+  list-style: none;
+  display: flex;
+  gap: spacing(sm); // Tighter gap for a professional look
+  flex-direction: column; // Vertical by default (Desktop Sidebar & Mobile Drawer)
+
+  @include tablet {
+    flex-direction: row;
+    gap: spacing(md);
+  }
+}
+
+.navItem {
+  width: 100%; // Ensure the list item takes full width
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  color: color(text-light);
+  text-decoration: none;
+  padding: spacing(sm) spacing(md);
+  border-radius: radius(md);
+  transition: all 0.2s;
+  width: 100%; // This makes all boxes the same width as the container
+  height: 44px; // Consistent height for all boxes
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  &.active {
+    background-color: color(secondary);
+    color: color(primary-dark);
+    font-weight: bold;
+  }
+
+  @include tablet {
+    width: auto; // Let them size naturally in the horizontal bar
+    color: color(primary);
+
+    &.active {
+      background-color: color(primary);
+      color: white;
+    }
+  }
+}
+
+.icon {
+  width: 24px; // Fixed width for the icon container ensures text alignment
+  margin-right: spacing(sm);
+  display: flex;
+  justify-content: center;
+  font-size: 1.1rem;
+
+  @include tablet {
+    display: none; // Hide icons on Tablet as per your wireframe image
+  }
+}
+
+.label {
+  flex-grow: 1;
+}

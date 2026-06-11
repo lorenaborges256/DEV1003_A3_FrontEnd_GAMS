@@ -1,0 +1,45 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  background: color(primary);
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 200;
+  transition: transform 0.3s;
+
+  // HIDE on Tablet (because it's in the Header)
+  @include tablet {
+    display: none;
+  }
+
+  // Drawer on Mobile
+  @include mobile {
+    transform: translateX(-100%);
+    &.open {
+      transform: translateX(0);
+    }
+  }
+}
+
+.top {
+  padding: spacing(lg);
+  display: flex;
+  @include flex-between;
+  color: white;
+  .close {
+    @include button-reset;
+    color: white;
+    display: none;
+    @include mobile {
+      display: block;
+    }
+  }
+}
+
+.nav {
+  padding: spacing(md);
+}

@@ -1,0 +1,33 @@
+// 1. Import your design tokens and helpers
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.loginWrapper {
+  // 2. Use the flex-center mixin from your _mixins.scss
+  @include flex-center;
+  min-height: 100vh;
+  background-color: color(background); // Use the colour function from _variables.scss
+  padding: spacing(xl);
+
+  // 3. Use the mobile mixin for responsive design
+  @include mobile {
+    padding: spacing(md);
+    background-color: white; // Just for testing: background changes on mobile
+  }
+}
+
+.card {
+  background-color: color(card-bg);
+  padding: spacing(xxl);
+  border-radius: radius(lg);
+  border: 1px solid color(border);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+
+  h1 {
+    color: color(primary);
+    margin-bottom: spacing(md);
+  }
+}
