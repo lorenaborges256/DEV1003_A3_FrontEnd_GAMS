@@ -1,4 +1,4 @@
-function ItemCard({ item, onViewDetails, onReserve, onWatch }) {
+function ItemCard({ item, onViewDetails, onReserve, onWatch, onUnwatch, isWatched }) {
   const isAvailable = item.stockQuantity > 0;
 
   return (
@@ -7,7 +7,14 @@ function ItemCard({ item, onViewDetails, onReserve, onWatch }) {
         <img src={item.imageUrl || '/icons.svg'} alt={item.name} />
       </div>
       <div className="card-body">
-        <h3 className="card-title">{item.name}</h3>
+        <div className="card-header">
+          <h3 className="card-title">{item.name}</h3>
+          {isWatched && (
+            <button type="button" onClick={() => onUnwatch(item._id)}>
+              Unwatch
+            </button>
+          )}
+        </div>
         <p className="card-category">{item.category}</p>
         <p className="card-price">Price: {item.price} Gold</p>
         <span className={`badge ${isAvailable ? 'badge-available' : 'badge-unavailable'}`}>
@@ -22,9 +29,11 @@ function ItemCard({ item, onViewDetails, onReserve, onWatch }) {
               Reserve
             </button>
           ) : (
-            <button type="button" onClick={() => onWatch(item._id)}>
-              Watch
-            </button>
+            !isWatched && (
+              <button type="button" onClick={() => onWatch(item._id)}>
+                Watch
+              </button>
+            )
           )}
         </div>
       </div>
