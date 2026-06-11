@@ -1,0 +1,36 @@
+@use 'variables' as *;
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin mobile {
+  @media (max-width: breakpoint(mobile)) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: (breakpoint(mobile) + 1px)) and (max-width: breakpoint(tablet)) {
+    @content;
+  }
+}
+
+@mixin button-reset {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
