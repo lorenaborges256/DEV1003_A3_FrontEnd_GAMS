@@ -21,36 +21,39 @@ import AdminUsersPage from './pages/admin/AdminUsersPage';
 
 import './index.scss';
 import Layout from './components/layout/Layout';
+import GlobalErrorBoundary from './components/GlobalErrorBoundary';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        {/* --- Auth routes --- */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+    <GlobalErrorBoundary>
+      <BrowserRouter>
+        <Routes>
+          {/* --- Auth routes --- */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
 
-        {/* --- User routes --- */}
-        <Route element={<Layout />}>
-          <Route path="/dashboard" element={<UserDashboard />} />
-          <Route path="/items" element={<ItemsPage />} />
-          <Route path="/items/:id" element={<ItemDetailsPage />} />
-          <Route path="/contracts" element={<ContractsPage />} />
-          <Route path="/contracts/:id" element={<ContractDetailsPage />} />
-          <Route path="/watchlist" element={<WatchlistPage />} />
-          <Route path="/notifications" element={<NotificationsPage />} />
+          {/* --- User routes --- */}
+          <Route element={<Layout />}>
+            <Route path="/dashboard" element={<UserDashboard />} />
+            <Route path="/items" element={<ItemsPage />} />
+            <Route path="/items/:id" element={<ItemDetailsPage />} />
+            <Route path="/contracts" element={<ContractsPage />} />
+            <Route path="/contracts/:id" element={<ContractDetailsPage />} />
+            <Route path="/watchlist" element={<WatchlistPage />} />
+            <Route path="/notifications" element={<NotificationsPage />} />
 
-          {/* --- Admin routes (nested under /admin with Outlet) --- */}
-          <Route path="/admin" element={<AdminDashboard />}>
-            <Route path="items" element={<AdminItemsPage />} />
-            <Route path="contracts" element={<AdminContractsPage />} />
-            <Route path="users" element={<AdminUsersPage />} />
+            {/* --- Admin routes (nested under /admin with Outlet) --- */}
+            <Route path="/admin" element={<AdminDashboard />}>
+              <Route path="items" element={<AdminItemsPage />} />
+              <Route path="contracts" element={<AdminContractsPage />} />
+              <Route path="users" element={<AdminUsersPage />} />
+            </Route>
           </Route>
-        </Route>
 
-        {/* --- Redirect root to login --- */}
-        <Route path="/" element={<LoginPage />} />
-      </Routes>
-    </BrowserRouter>
+          {/* --- Redirect root to login --- */}
+          <Route path="/" element={<LoginPage />} />
+        </Routes>
+      </BrowserRouter>
+    </GlobalErrorBoundary>
   </StrictMode>
 );
