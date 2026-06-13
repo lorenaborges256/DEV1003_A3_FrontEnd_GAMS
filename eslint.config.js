@@ -27,7 +27,7 @@ export default defineConfig([
   },
   {
     files: ["src/tests/**/*.jsx"],
-    languageOptions: {
+     languageOptions: {
       globals: {
         test: "readonly",
         expect: "readonly",

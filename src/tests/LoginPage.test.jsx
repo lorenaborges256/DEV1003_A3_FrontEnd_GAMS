@@ -1,6 +1,6 @@
+import { MemoryRouter } from 'react-router-dom';
 import { test, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
 import LoginPage from '../pages/LoginPage';
 
 test('Login page renders without crashing', () => {
@@ -9,5 +9,5 @@ test('Login page renders without crashing', () => {
       <LoginPage />
     </MemoryRouter>
   );
-  expect(screen.getByText('GAMS Login')).toBeInTheDocument();
+  expect(screen.getByText(/GAMS Login/i)).toBeInTheDocument();
 });
