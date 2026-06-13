@@ -1,0 +1,44 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(xs);
+  margin-bottom: spacing(md);
+}
+
+.label {
+  font-weight: 600;
+  color: color(text-dark);
+  text-align: left;
+}
+
+.required {
+  color: color(error);
+}
+
+.input {
+  padding: spacing(sm) spacing(md);
+  border: 1px solid color(border);
+  border-radius: radius(md);
+  background-color: white;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: color(primary);
+    box-shadow: 0 0 0 2px rgba(74, 31, 99, 0.15); // primary purple glow
+  }
+}
+
+.inputError {
+  border-color: color(error);
+}
+
+.errorText {
+  color: color(error);
+  font-size: 0.875rem;
+  margin-top: spacing(xs);
+}
