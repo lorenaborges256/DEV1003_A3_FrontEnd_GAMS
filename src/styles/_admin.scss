@@ -1,0 +1,57 @@
+@use './variables' as *;
+
+.admin-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: spacing(xl);
+  margin-top: spacing(xl);
+}
+
+.admin-summary-card {
+  display: flex;
+  gap: spacing(lg);
+  padding: spacing(xl);
+
+  background: color(card-bg);
+  border: 1px solid color(border);
+  border-radius: radius(lg);
+}
+
+.admin-card-image {
+  width: 120px;
+  height: 120px;
+  background: #d9d9d9;
+  border-radius: radius(md);
+  flex-shrink: 0;
+}
+
+.admin-summary-card h2 {
+  margin-bottom: spacing(sm);
+}
+
+.admin-summary-card a {
+  display: inline-block;
+  margin-top: spacing(sm);
+  color: color(primary);
+  font-weight: 600;
+}
+
+@media (max-width: breakpoint(tablet)) {
+  .admin-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.admin-summary-card {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.admin-summary-card:hover {
+  transform: translateY(-3px);
+}
