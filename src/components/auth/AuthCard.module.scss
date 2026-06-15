@@ -1,0 +1,82 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: spacing(lg);
+  background-color: color(background-light);
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: white;
+  border-radius: radius(lg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  max-width: 900px;
+  width: 100%;
+
+  @include tablet {
+    grid-template-columns: 1fr;
+  }
+}
+
+.branding {
+  background-color: color(primary-light);
+  padding: spacing(xl);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+
+  @include tablet {
+    text-align: center;
+  }
+}
+
+.appName {
+  font-size: 2rem;
+  font-weight: 700;
+  color: color(primary-dark);
+}
+
+.tagline {
+  margin-top: spacing(sm);
+  color: color(text-dark);
+}
+
+.formArea {
+  padding: spacing(xl);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  @include mobile {
+    padding: spacing(lg);
+  }
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: spacing(md);
+}
+
+.subtitle {
+  margin-bottom: spacing(md);
+  color: color(text-light);
+}
+
+.footer {
+  margin-top: spacing(md);
+  font-size: 0.9rem;
+}
+
+.footerLink {
+  color: color(primary);
+  font-weight: 600;
+}
