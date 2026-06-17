@@ -55,3 +55,28 @@
 .admin-summary-card:hover {
   transform: translateY(-3px);
 }
+
+.admin-form-page {
+  max-width: 1000px;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(md);
+}
+
+.admin-form-button {
+  align-self: flex-start;
+  padding: spacing(sm) spacing(lg);
+  background-color: color(primary);
+  color: white;
+  border: none;
+  border-radius: radius(md);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-form-button:hover {
+  opacity: 0.9;
+}
