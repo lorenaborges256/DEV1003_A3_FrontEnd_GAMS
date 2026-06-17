@@ -18,30 +18,34 @@ The technologies used in this project reflect the tools and practices taught thr
 
 ### 1.1 Hardware Requirements
 
-GAMS is a web-based REST API and has no specialised hardware requirements. Any machine capable of running a modern operating system (Windows 10+, macOS 12+, or Ubuntu 20.04+) with at least **4 GB of RAM** and a stable internet connection is sufficient to develop, run, and test the application. No GPU, dedicated storage device, or proprietary hardware is required.
+GAMS is a web-based REST API and has no specialised hardware requirements.  Any machine capable of running a modern operating system (Windows 10+, macOS 12+, or Ubuntu 20.04+) with at least **4 GB of RAM** and a stable internet connection. No GPU, dedicated storage device, or proprietary hardware is required.
+Standard consumer-grade or developer-grade laptops are the industry norm for local web development. React and Vite are highly optimised, meaning high-end specifications are not necessary. While cloud environments offer consistency (such as GitHub Codespaces or AWS Cloud9), local development was chosen because it does not require continuous internet access, incurs no ongoing cloud hosting costs during development, and provides lower latency for hot-module replacement (HMR) when using Vite.
 
 ### 1.2 Software Requirements
 
-The GAMS project relies on a collection of modern front‑end technologies, software tools, and npm packages that together support the development, styling, testing, and deployment of the GAMS React application. The following section outlines all required software and dependencies, explains the purpose of each technology, compares them with alternative options considered during development, and identifies the licensing associated with each package.
+The GAMS project relies on a collection of modern front‑end technologies, software tools, and npm packages. The following tables outline all required software, explicitly detailing their purpose, industry relevance, alternatives considered, and licensing to meet assessment requirements.
 
-The following software must be installed to run the application locally:
+#### 1.2.1 Core Environment Tools
 
-| Software | Version | Purpose |
-| --- | --- | --- |
-| Node.js | v18+ | JavaScript runtime that executes the server-side application |
-| npm | v9+ | Package manager used to install all project dependencies and run scripts|
-| Git | Any | Version control for cloning and managing the repository |
+The following software must be installed to run and manage the application locally.
 
-### 1.2.1 Production Dependencies Packages
+| Software | Purpose in GAMS | Industry Relevance | Alternatives Considered | License |
+| :--- | :--- | :--- | :--- | :--- |
+| **Node.js (v18+)** | JavaScript runtime used to execute Vite, tests, and build scripts. | The absolute industry standard runtime for modern JavaScript development and build tooling. | Deno, Bun (newer, but less stable ecosystem compared to Node.js). | MIT |
+| **npm (v9+)** | Package manager used to install all project dependencies and execute `package.json` scripts. | The default and most widely used package manager in the JavaScript ecosystem. | Yarn, pnpm (npm was chosen as it is built-in to Node.js, requiring no extra setup). | Artistic License 2.0 |
+| **Git** | Version control system for tracking changes, branching, and collaborating on the repository. | The undisputed industry standard for source code management. | Subversion (SVN), Mercurial (Git offers better branching models and GitHub integration). | GPL-2.0 |
+
+#### 1.2.2 Production Dependencies
 
 The following packages are installed as runtime dependencies and are required for the application to function in production.
 
-| Package | Purpose in GAMS | Why Chosen Over Alternatives | Alternatives Considered | License |
-| --- | --- | --- | --- | --- |
-| **react** | Core UI library for building components and managing state | Mature ecosystem, component model, widely adopted in industry | Vue, Angular, Svelte | MIT |
-| **react-dom** | Renders React components to the DOM | Required for React SPA architecture | N/A (React-specific) | MIT |
-| **react-router-dom** | Client-side routing for pages and nested layouts | Best-in-class routing for React; supports nested routes used in GAMS | Next.js routing, TanStack Router | MIT |
-| **sass** | Enables SCSS Modules and global styling tokens | More powerful than plain CSS; supports variables, mixins, nesting | Tailwind CSS, Styled Components, CSS Modules only | MIT |
+| Package | Purpose in GAMS | Industry Relevance & Why Chosen | Alternatives Considered | License |
+| :--- | :--- | :--- | :--- | :--- |
+| **react** | Core UI library for building components and managing state. | Massive industry adoption, mature ecosystem. Chosen for its declarative model and component reusability. | Vue, Angular, Svelte | MIT |
+| **react-dom** | Renders React components to the browser DOM. | Essential pairing with React for web applications. | N/A (React-specific requirement) | MIT |
+| **react-router-dom** | Client-side routing for pages, navigation, and nested layouts. | The most widely used routing library in the React ecosystem. Chosen for its robust nested routing support. | Next.js routing (requires framework change), TanStack Router | MIT |
+| **sass** | Enables SCSS Modules and global styling tokens (variables, mixins). | Industry standard for scalable CSS. Chosen because it provides more power than plain CSS while avoiding the runtime overhead of CSS-in-JS. | Tailwind CSS, Styled Components, CSS Modules (plain CSS) | MIT |
+
 
 ### 1.2.2 Development Dependencies Packages
 
@@ -59,45 +63,12 @@ The following packages are used only during development (Build, Testing, Linting
 | **eslint-config-prettier** | Prevents conflicts between ESLint and Prettier | Ensures formatting and linting work together | None | MIT |
 | **prettier** | Code formatting | Enforces consistent formatting across the project | Beautify, StandardJS | MIT |
 
-### 1.2.3 Technology Choices Justification
+### 1.3 Front-End API Consumption 
 
-The technologies selected for the GAMS front‑end were chosen to support a modern, maintainable, and scalable single‑page application that meets the requirements of DEV1003 — Advanced Applications. Each tool was evaluated against alternatives to ensure the best balance of performance, developer experience, and long‑term sustainability.
-
-**React** was chosen as the core UI library due to its component‑driven architecture, strong ecosystem, and industry adoption. Its declarative model and support for hooks make it well‑suited for building reusable, stateful components across both user and admin interfaces. Alternatives such as Vue and Angular were considered; however, React offered greater flexibility and aligned more closely with the MERN stack used in previous assessments.
-
-**Vite** was selected as the build tool and development server because of its exceptional speed, modern architecture, and seamless integration with React. Compared to older tools like Webpack or Create React App, Vite provides faster hot module replacement, simpler configuration, and a more efficient production build pipeline, improving both development workflow and performance.
-
-**React Router** was chosen to manage client‑side navigation, enabling nested routes, protected layouts, and role‑specific views. Its mature API and compatibility with React’s component model made it a better fit than alternatives such as Next.js routing (which requires a different project structure) or TanStack Router (which is newer and less widely adopted).
-
-**SCSS Modules** were used for styling to provide locally scoped styles, maintainable structure, and access to variables, mixins, and nesting. This approach offers more control than utility‑first frameworks like Tailwind CSS and avoids the runtime overhead of CSS‑in‑JS solutions such as Styled Components. SCSS Modules also integrate cleanly with Vite and support a scalable design system.
-
-**Vitest** and **React Testing Library** were chosen for testing due to their modern APIs, fast execution, and compatibility with Vite. Vitest offers a more efficient developer experience than Jest when used in Vite projects, while React Testing Library encourages accessible, behaviour‑driven testing practices. Together, they support the assessment requirement for validating essential application functionality.
-
-Finally, **ESLint (Airbnb rules)** and **Prettier** were selected to enforce a consistent coding style and maintain high code quality. The Airbnb style guide is widely respected and encourages best practices in JavaScript and React development. Prettier ensures consistent formatting across the codebase, reducing friction in collaboration and improving readability.
-
-Collectively, these technologies were chosen to create a front‑end that is fast, reliable, maintainable, and aligned with modern industry standards, while also meeting the functional and technical requirements of the assessment.
-
-### 1.4 HTTP Communication Features
-
-GAMS uses all four industry-standard HTTP communication features throughout the API, applied correctly and consistently across all routes.
-
-| Feature | What It Is | Where Used in GAMS | Example |
-| --- | --- | --- | --- |
-| **Headers** | Metadata sent alongside an HTTP request, separate from the URL and body | `src/middleware/verifyToken.js` — reads the `Authorization` header on every protected request to extract and validate the JWT token | `request.headers.authorization` → `"Bearer <token>"` |
-| **Body Content** | The data payload sent inside `POST` and `PUT` requests, parsed as JSON | All `POST` and `PUT` route handlers — used to receive data for creating users, items, contracts, watchlist entries, and notifications | `const { name, email, password } = request.body` in `authController.js` |
-| **Params** | Values embedded directly in the URL path to identify a specific resource | All `GET /:id`, `PUT /:id`, and `DELETE /:id` routes — used to look up a single document in the database for reservations, users, notifications, and watchlist entries | `request.params.id` in `reservationController.js`, `adminController.js`, `notificationRoutes.js` |
-| **Authorization** | Controlling which users can access which endpoints based on identity and role | Applied via two middleware functions chained on route definitions: `verifyToken` (authenticated users) and `isAdmin` (admin-only routes) | `router.delete('/users/:id', verifyToken, isAdmin, deleteUser)` in `adminRoutes.js` |
-
-### 1.5 HTTP Verbs and CRUD Operations
-
-GAMS uses four industry-standard HTTP verbs across 28 route definitions spanning nine entities. Every verb is applied correctly and consistently, matching its universally agreed CRUD meaning. No verb is misused — for example, no `GET` route modifies data, and no `DELETE` route is used for anything other than removal.
-
-| HTTP Verb | CRUD Operation | Role in GAMS |
-| --- | --- | --- |
-| `GET` | Read | Retrieve lists and single records |
-| `POST` | Create / Trigger | Create new resources or trigger actions with side effects |
-| `PUT` | Update | Replace or update an existing resource by `:id` |
-| `DELETE` | Delete | Remove a resource permanently |
+*   **Fetch API:** The native browser `fetch` API is used to make network requests to the backend server.
+*   **Headers & Authorization:** The frontend securely stores the JWT token (e.g., in `localStorage` or context) and attaches it to the `Authorization: Bearer <token>` header for protected routes.
+*   **Body Payload:** Form data from React components is serialised into JSON and sent in the body of `POST` and `PUT` requests.
+*   **Error Handling:** The frontend intercepts non-2xx HTTP status codes and displays appropriate user-friendly error messages (e.g., toast notifications) without crashing the application.
 
 ## 2. DRY Principles
 
@@ -172,13 +143,15 @@ The testing strategy follows a practical, component‑focused approach, which is
 
 - `GlobalErrorBoundary.test.jsx` — ensures the Global Error Boundary catches rendering errors and displays the fallback UI.
 
-- `LoginPage.test.jsx` — verifies that the login page renders without crashing and contains expected text elements.
+- `LoginPage.test.jsx` —  verifies that the login page renders without crashing, displays the expected heading, email and password fields, and a submit button, shows validation error messages when the form is submitted empty, and includes a link to the registration page.
 
 - `Layout.test.jsx` — checks that the main layout renders shared UI elements such as the header and sidebar navigation.
 
+- `Input.test.jsx` - validates that the Input component renders correctly across multiple configurations, including label display, required field indication, placeholder text, and user input handling.
+
 This approach ensures that the most critical parts of the user interface behave reliably, supports the assessment requirement for demonstrating testing competency, and provides a solid foundation for future expansion as the application grows.
 
-![Testing](src/_img/tests_3passed.png)
+![Testing](src/_img/tests_4files_12tests.png)
 
 ## 5. Error Handling
 
@@ -212,37 +185,79 @@ This strategy aligns with modern React best practices and meets the assessment r
 
 ## 7. Getting Started
 
-### 7.1 Pre requisites
+### 7.1 Prerequisites
+
+Ensure the following software is installed on your machine before proceeding:
+
+| Software | Version | Purpose |
+| :--- | :--- | :--- |
+| [Node.js](https://nodejs.org/ ) | v18 or higher | JavaScript runtime required to execute build tools and scripts |
+| [npm](https://www.npmjs.com/ ) | v9 or higher | Package manager used to install dependencies and run project scripts |
+| [Git](https://git-scm.com/ ) | Any | Version control system used to clone the repository |
+
+> The GAMS backend API must also be running locally on port `5000` before the frontend can communicate with it. Refer to the backend repository for setup instructions.
 
 ### 7.2 Installation
 
-1.Clone the repository:
+**7.2.1. Clone the repository:**
 
 ```bash
-git clone 
-cd 
+git clone https://github.com/lorenaborges256/DEV1003_A3_FrontEnd_GAMS.git
+cd DEV1003_A3_FrontEnd_GAMS
 ```
 
-2.Install dependencies:
+**7.2.2. Install dependencies:**
 
 ```bash
 npm install
 ```
 
-3.Create a .env file in the project root:
+**7.2.3. Create a .env file in the project root:**
 
-4.Start the development server:
+```bash
+cp .env.example .env
+```
+Or create it manually with the following content:
+```env
+VITE_API_URL=http://localhost:5000
+```
+> VITE_API_URL is the base URL of the GAMS backend API. Update this value if your backend is running on a different port or host.
+
+
+**7.2.4. Start the development server:**
 
 ```bash
 npm run dev
 ```
+The application will be available at http://localhost:5173 by default.
 
-5.Run the automated tests:
 
+**7.2.5. Run the automated tests:**
 ```bash
 npm test
 ```
 
+**7.2.6. (Optional) Lint and format the codebase:**
+
+```bash
+npm run lint      # Check for code style issues
+npm run format    # Auto-format all source files with Prettier
+```
+
+> **Note:** You should also add a `.env.example` file to the root of the repository with the following content, so other developers know which variables are required:
+> 
+>  ```env
+> # Base URL of the GAMS backend API
+> VITE_API_URL=http://localhost:5000
+>  ```
+> 
+> And make sure `.env` is listed in your `.gitignore` so it is never committed to the repository.
+
+
 ## 8. Conclusion
 
-GAMS demonstrates a complete, production-ready REST API built on the MERN stack, implementing secure role-based authentication, full CRUD operations across nine entities, centralised error handling, and automated test coverage across the application's core functionality. Every architectural decision — from the MVC pattern and Airbnb style guide to the choice of JWT over session-based auth — was made deliberately and is documented in this README. The codebase is designed to serve as the back-end foundation for the GAMS React front-end, with all endpoints structured and secured in anticipation of that integration.
+GAMS demonstrates a complete, production-ready React application built as the front-end layer of the MERN stack. It implements responsive, accessible user interfaces for both standard users and administrators, client-side routing with role-based protected views, centralised error handling via a Global Error Boundary, and automated test coverage across the application's core components and pages.
+
+The codebase adheres consistently to the Airbnb style guide, applies DRY principles throughout, and is structured to be maintainable and scalable.
+
+The GAMS front-end is designed to integrate seamlessly with the GAMS backend REST API, consuming its secured endpoints through a centralised Axios service that attaches JWT tokens to every authenticated request. Together, the two applications form a cohesive, full-stack Guild Availability Management System.
