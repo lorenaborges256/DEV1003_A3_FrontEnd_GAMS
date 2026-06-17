@@ -15,7 +15,7 @@ function RegisterForm() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: '' }));
@@ -27,7 +27,7 @@ function RegisterForm() {
     if (!form.name.trim()) newErrors.name = 'Name is required';
     if (!form.email.trim()) newErrors.email = 'Email is required';
     if (!form.password) newErrors.password = 'Password is required';
-    
+
     if (form.password !== form.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
     }
@@ -40,7 +40,6 @@ function RegisterForm() {
     e.preventDefault();
     if (validate()) {
       // TODO: Call your registration API here
-      console.log('Registering user:', form);
     }
   };
 
@@ -56,7 +55,7 @@ function RegisterForm() {
         error={errors.name}
         required
       />
-      
+
       <Input
         label="Email"
         name="email"

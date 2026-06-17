@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import styles from './AuthCard.module.scss';
 
 /**
@@ -12,7 +11,6 @@ function AuthCard({ children, title, footerContent }) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.card}>
-
         {/* ── Left panel: branding ── */}
         <aside className={styles.branding} aria-label="Application branding">
           <div className={styles.logoPlaceholder} aria-hidden="true" />
@@ -24,11 +22,8 @@ function AuthCard({ children, title, footerContent }) {
         <section className={styles.formArea}>
           {title && <h1 className={styles.title}>{title}</h1>}
           {children}
-          {footerContent && (
-            <p className={styles.footer}>{footerContent}</p>
-          )}
+          {footerContent && <p className={styles.footer}>{footerContent}</p>}
         </section>
-
       </div>
     </div>
   );

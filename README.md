@@ -16,16 +16,16 @@ The **Guild Availability Management System (GAMS)** front‑end is a responsive 
 
 The technologies used in this project reflect the tools and practices taught throughout DEV1003 — Advanced Applications at Coder Academy. Each dependency was selected in alignment with the course curriculum, ensuring that the stack represents current industry standards and prepares the team for professional software development environments.
 
-### 1.1 Hardware Requirements
+### 1.1. Hardware Requirements
 
 GAMS is a web-based REST API and has no specialised hardware requirements.  Any machine capable of running a modern operating system (Windows 10+, macOS 12+, or Ubuntu 20.04+) with at least **4 GB of RAM** and a stable internet connection. No GPU, dedicated storage device, or proprietary hardware is required.
 Standard consumer-grade or developer-grade laptops are the industry norm for local web development. React and Vite are highly optimised, meaning high-end specifications are not necessary. While cloud environments offer consistency (such as GitHub Codespaces or AWS Cloud9), local development was chosen because it does not require continuous internet access, incurs no ongoing cloud hosting costs during development, and provides lower latency for hot-module replacement (HMR) when using Vite.
 
-### 1.2 Software Requirements
+### 1.2. Software Requirements
 
 The GAMS project relies on a collection of modern front‑end technologies, software tools, and npm packages. The following tables outline all required software, explicitly detailing their purpose, industry relevance, alternatives considered, and licensing to meet assessment requirements.
 
-#### 1.2.1 Core Environment Tools
+#### 1.2.1. Core Environment Tools
 
 The following software must be installed to run and manage the application locally.
 
@@ -35,7 +35,7 @@ The following software must be installed to run and manage the application local
 | **npm (v9+)** | Package manager used to install all project dependencies and execute `package.json` scripts. | The default and most widely used package manager in the JavaScript ecosystem. | Yarn, pnpm (npm was chosen as it is built-in to Node.js, requiring no extra setup). | Artistic License 2.0 |
 | **Git** | Version control system for tracking changes, branching, and collaborating on the repository. | The undisputed industry standard for source code management. | Subversion (SVN), Mercurial (Git offers better branching models and GitHub integration). | GPL-2.0 |
 
-#### 1.2.2 Production Dependencies
+#### 1.2.2. Production Dependencies
 
 The following packages are installed as runtime dependencies and are required for the application to function in production.
 
@@ -47,7 +47,7 @@ The following packages are installed as runtime dependencies and are required fo
 | **sass** | Enables SCSS Modules and global styling tokens (variables, mixins). | Industry standard for scalable CSS. Chosen because it provides more power than plain CSS while avoiding the runtime overhead of CSS-in-JS. | Tailwind CSS, Styled Components, CSS Modules (plain CSS) | MIT |
 
 
-### 1.2.2 Development Dependencies Packages
+#### 1.2.3. Development Dependencies
 
 The following packages are used only during development (Build, Testing, Linting, Tooling).
 
@@ -63,7 +63,7 @@ The following packages are used only during development (Build, Testing, Linting
 | **eslint-config-prettier** | Prevents conflicts between ESLint and Prettier | Ensures formatting and linting work together | None | MIT |
 | **prettier** | Code formatting | Enforces consistent formatting across the project | Beautify, StandardJS | MIT |
 
-### 1.3 Front-End API Consumption 
+### 1.3. Front-End API Consumption 
 
 *   **Fetch API:** The native browser `fetch` API is used to make network requests to the backend server.
 *   **Headers & Authorization:** The frontend securely stores the JWT token (e.g., in `localStorage` or context) and attaches it to the `Authorization: Bearer <token>` header for protected routes.
@@ -83,11 +83,47 @@ The GAMS front‑end applies DRY (Don’t Repeat Yourself) principles across its
 | **Routing Structure** | ``src/main.jsx`` | Nested routes and shared layout wrappers prevent repeated route definitions and avoid duplicating navigation logic across pages. |
 | **Testing Utilities** | ``src/tests/`` | Reusable testing patterns (rendering helpers, accessibility queries) ensure consistent test structure without rewriting boilerplate for each test file. |
 
-## 3. Code Style & Linting
+## 3. Semantic HTML & Accessibility
+
+The GAMS front-end deliberately utilises HTML5 semantic elements to substantially add meaning to the document structure and cater to accessibility (a11y) standards. Rather than relying on generic `<div>` and `<span>` tags, the application is built with a semantic hierarchy that assists screen readers, search engines, and developer comprehension.
+
+### 3.1. Structural Semantics
+The application's layout is composed entirely of semantic landmarks:
+*   **`<header>` and `<nav>`**: Used in `Header.jsx` and `Sidebar.jsx` to define the primary navigation areas of the application.
+*   **`<main>`**: Used in `Layout.jsx` and all page components (e.g., `ContractsPage.jsx`, `NotificationsPage.jsx`) to explicitly designate the primary content area, allowing assistive technologies to bypass repetitive navigation links.
+*   **`<aside>`**: Used in `Sidebar.jsx` for the off-canvas menu, and in `AuthCard.jsx` to separate the application branding from the main form content.
+*   **`<section>` and `<article>`**: Used extensively in the `AdminDashboard.jsx` to group related content (e.g., summary statistics) and define self-contained, independent widgets.
+
+### 3.2. Accessibility (a11y) Features
+Beyond structural tags, the application incorporates specific accessibility attributes to ensure it is usable by all individuals:
+*   **ARIA Labels & Roles**: `aria-label` is used on the branding `<aside>` in the authentication layout, and `aria-hidden="true"` is applied to purely decorative elements (such as logo placeholders and card background images) so screen readers ignore them.
+*   **Form Accessibility**: Every `<input>` component in `Input.jsx` is explicitly linked to a `<label>` using the `htmlFor` attribute matching the input's `id`. Required fields are clearly indicated both visually and semantically via the `required` HTML attribute.
+*   **Image Alternate Text**: All `<img>` tags in `ContractCard.jsx` and `ItemCard.jsx` include dynamic `alt` attributes tied to the specific item or contract name, ensuring visually impaired users understand the image context.
+*   **Heading Hierarchy**: Pages strictly follow heading ranks (`<h1>` for page titles, `<h2>` for section headers, `<h3>` for card titles), avoiding skipped levels to maintain a logical document outline.
+
+## 4. Responsive Design & CSS
+
+The application utilises CSS (via SCSS Modules) to create responsive web page elements that completely function across multiple different screen types and resolutions. The design system is built mobile-first, ensuring that layout and typography adapt fluidly to the user's device.
+
+### 4.1. Breakpoint Strategy
+A centralised breakpoint system is defined in `_variables.scss` and exposed via mixins in `_mixins.scss`. This ensures consistency across the entire application:
+*   **Mobile (`max-width: 768px`)**: Single-column layouts, hidden sidebars with hamburger menu toggles, and stacked form fields.
+*   **Tablet (`769px - 1024px`)**: Transition layouts where sidebars may collapse into top navigation bars (as seen in `Header.module.scss`) to maximise horizontal screen space.
+*   **Desktop (`> 1024px`)**: Full multi-column layouts, persistent sidebars, and expanded data grids.
+
+### 4.2. Responsive Layout Implementations
+The CSS utilises modern layout techniques to achieve this responsiveness without relying on external UI frameworks:
+*   **CSS Grid**: The `AuthCard.module.scss` uses CSS Grid to display a two-column layout (`1fr 1.4fr`) on desktop, which gracefully collapses to a single column (`1fr`) on tablet and mobile devices using the `@include mobile` mixin.
+*   **Flexbox**: Used extensively throughout the application (e.g., `Header.module.scss`, `Layout.module.scss`) to manage alignment, spacing, and distribution of elements. Flexbox allows the navigation links and user icons to wrap or space evenly depending on the available viewport width.
+*   **Responsive Navigation**: The `Sidebar.jsx` and `Header.jsx` work together to provide a fully responsive navigation experience. On desktop, the sidebar is fixed to the left (`width: 240px`). On mobile, the CSS transforms the sidebar off-screen (`transform: translateX(-100%)`) and introduces a hamburger button in the header. When toggled, the sidebar slides in, and a dark overlay is rendered to trap focus.
+
+By combining SCSS variables, mixins, Flexbox, and CSS Grid, the GAMS front-end delivers a cohesive, fully responsive experience that functions flawlessly across mobile, tablet, and desktop environments.
+
+## 5. Code Style & Linting
 
 The GAMS front‑end maintains a consistent, professional, and readable codebase through the combined use of ESLint for static analysis and Prettier for automatic formatting. These tools ensure that all React components, hooks, styles, and test files follow a unified style guide, reducing errors and improving maintainability across the project.
 
-### ESLint
+### 5.1. ESLint
 
 ESLint is configured in `eslint.config.js` using the flat config system introduced in ESLint 10. The configuration extends several rule sets that enforce best practices across the React front‑end:
 
@@ -109,7 +145,7 @@ To run the linter across the entire project:
 npm run lint
 ```
 
-### Prettier
+### 5.2. Prettier
 
 Prettier is configured via .prettierrc with the following rules:
 
@@ -129,7 +165,7 @@ To automatically format all source files:
 npm run format
 ```
 
-## 4. Testing
+## 6. Testing
 
 The GAMS front‑end uses **Vitest** as its test runner, configured with the **jsdom** environment to simulate a browser-like **DOM**. This allows React components to be tested without requiring a real browser. **React Testing Library** `(@testing-library/react)` is used to render components and interact with them in a way that reflects real user behaviour, while `@testing-library/jest-dom` extends Vitest with readable assertions such as `toBeInTheDocument()`.
 
@@ -153,7 +189,7 @@ This approach ensures that the most critical parts of the user interface behave 
 
 ![Testing](src/_img/tests_4files_12tests.png)
 
-## 5. Error Handling
+## 7. Error Handling
 
 The GAMS front‑end implements a **centralised error‑handling strategy** using a Global Error Boundary that wraps the entire application. This ensures that unexpected rendering errors anywhere in the component tree are caught and handled gracefully, preventing the application from crashing and providing users with a clear, consistent fallback interface.
 
@@ -183,9 +219,9 @@ The error‑handling flow for the front‑end is:
 
 This strategy aligns with modern React best practices and meets the assessment requirement for graceful, centralised error handling in a front‑end application.
 
-## 7. Getting Started
+## 8. Getting Started
 
-### 7.1 Prerequisites
+### 8.1. Pre requisites
 
 Ensure the following software is installed on your machine before proceeding:
 
@@ -197,22 +233,22 @@ Ensure the following software is installed on your machine before proceeding:
 
 > The GAMS backend API must also be running locally on port `5000` before the frontend can communicate with it. Refer to the backend repository for setup instructions.
 
-### 7.2 Installation
+### 8.2. Installation
 
-**7.2.1. Clone the repository:**
+#### 8.2.1. Clone the repository:
 
 ```bash
 git clone https://github.com/lorenaborges256/DEV1003_A3_FrontEnd_GAMS.git
 cd DEV1003_A3_FrontEnd_GAMS
 ```
 
-**7.2.2. Install dependencies:**
+#### 8.2.2. Install dependencies:
 
 ```bash
 npm install
 ```
 
-**7.2.3. Create a .env file in the project root:**
+#### 8.2.3. Create a .env file in the project root:
 
 ```bash
 cp .env.example .env
@@ -224,7 +260,7 @@ VITE_API_URL=http://localhost:5000
 > VITE_API_URL is the base URL of the GAMS backend API. Update this value if your backend is running on a different port or host.
 
 
-**7.2.4. Start the development server:**
+#### 8.2.4. Start the development server:
 
 ```bash
 npm run dev
@@ -232,12 +268,12 @@ npm run dev
 The application will be available at http://localhost:5173 by default.
 
 
-**7.2.5. Run the automated tests:**
+#### 8.2.5. Run the automated tests:
 ```bash
 npm test
 ```
 
-**7.2.6. (Optional) Lint and format the codebase:**
+#### 8.2.6. (Optional) Lint and format the codebase:
 
 ```bash
 npm run lint      # Check for code style issues
@@ -254,7 +290,7 @@ npm run format    # Auto-format all source files with Prettier
 > And make sure `.env` is listed in your `.gitignore` so it is never committed to the repository.
 
 
-## 8. Conclusion
+## 9. Conclusion
 
 GAMS demonstrates a complete, production-ready React application built as the front-end layer of the MERN stack. It implements responsive, accessible user interfaces for both standard users and administrators, client-side routing with role-based protected views, centralised error handling via a Global Error Boundary, and automated test coverage across the application's core components and pages.
 
