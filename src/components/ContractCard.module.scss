@@ -1,0 +1,8 @@
+@use '../styles/variables' as *;
+
+.card {
+  background: color(card-bg);
+  border: 1px solid color(border);
+  border-radius: radius(lg);
+  padding: spacing(lg);
+}

@@ -1,8 +1,10 @@
+import styles from './ContractCard.module.scss';
+
 function ContractCard({ contract, onViewDetails, onAccept, onWatch, onUnwatch, isWatched }) {
   const isAvailable = contract.isAvailable;
 
   return (
-    <div className="card">
+    <div className={styles.card}>
       <div className="card-image">
         <img src={contract.imageUrl || '/icons.svg'} alt={contract.title} />
       </div>
