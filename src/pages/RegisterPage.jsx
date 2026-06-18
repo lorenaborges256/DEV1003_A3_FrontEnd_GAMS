@@ -5,16 +5,12 @@ import RegisterForm from '../components/auth/RegisterForm';
 function RegisterPage() {
   const footerLink = (
     <>
-      Already have an account?{' '}
-      <Link to="/login">Login</Link>
+      Already have an account? <Link to="/login">Login</Link>
     </>
   );
 
   return (
-    <AuthCard 
-      title="Create Account" 
-      footerContent={footerLink}
-    >
+    <AuthCard title="Create Account" footerContent={footerLink}>
       <RegisterForm />
     </AuthCard>
   );

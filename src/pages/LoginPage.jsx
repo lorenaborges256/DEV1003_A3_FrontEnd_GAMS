@@ -20,14 +20,12 @@ function LoginPage() {
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       // TODO: call auth API
-      console.log('Submitting:', form);
     }
   }
 
   const footer = (
     <>
-      Don&apos;t have an account?{' '}
-      <Link to="/register">Create Account</Link>
+      Don&apos;t have an account? <Link to="/register">Create Account</Link>
     </>
   );
 

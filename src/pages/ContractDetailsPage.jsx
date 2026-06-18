@@ -42,7 +42,9 @@ function ContractDetailsPage() {
         Back to Contracts
       </button>
       <h1>{contract.title}</h1>
-      <p>{contract.difficulty} / {contract.type}</p>
+      <p>
+        {contract.difficulty} / {contract.type}
+      </p>
       <span>{contract.isAvailable ? 'Available' : 'Upcoming'}</span>
       <p>Opens: {new Date(contract.startAt).toLocaleDateString()}</p>
       <p>Closes: {new Date(contract.endAt).toLocaleDateString()}</p>
