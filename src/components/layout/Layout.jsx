@@ -14,20 +14,18 @@ function Layout() {
     <div className={styles.layoutContainer}>
       {/* Pass state and close function to Sidebar */}
       <Sidebar isOpen={isMenuOpen} onClose={closeMenu} />
-      
+
       <div className={styles.mainContent}>
         {/* Pass toggle function to Header */}
         <Header onToggleMenu={toggleMenu} />
-        
+
         <main className={styles.pageBody}>
           <Outlet />
         </main>
       </div>
 
       {/* Overlay to close menu when clicking outside on mobile */}
-      {isMenuOpen && (
-        <div className={styles.overlay} onClick={closeMenu} />
-      )}
+      {isMenuOpen && <div className={styles.overlay} onClick={closeMenu} />}
     </div>
   );
 }
