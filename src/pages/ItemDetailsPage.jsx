@@ -22,8 +22,21 @@ function ItemDetailsPage() {
       });
   }, [id]);
 
+  const handleReserve = () => {
+    api
+      .post(`/items/${id}/reserve`)
+      .then(() => {
+        alert('Item reserved successfully!');
+      })
+      .catch(() => {
+        alert('Failed to reserve item.');
+      });
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
+
+  const isAvailable = item.stockQuantity > 0;
 
   return (
     <main>
@@ -32,7 +45,18 @@ function ItemDetailsPage() {
       </button>
       <h1>{item.name}</h1>
       <p>{item.category}</p>
+      <span>{isAvailable ? 'Available' : 'Currently Unavailable'}</span>
+      <p>Price: {item.price} Gold</p>
       <p>{item.description}</p>
+      {isAvailable ? (
+        <button type="button" onClick={handleReserve}>
+          Reserve
+        </button>
+      ) : (
+        <button type="button" onClick={() => alert('Watch coming soon!')}>
+          Watch
+        </button>
+      )}
     </main>
   );
 }
