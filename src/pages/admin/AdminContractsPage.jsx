@@ -14,7 +14,10 @@ function AdminContractsPage() {
   });
 
   function handleChange(e) {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
   }
 
   function handleSubmit(e) {
@@ -43,7 +46,7 @@ function AdminContractsPage() {
           name="difficultyType"
           value={form.difficultyType}
           onChange={handleChange}
-          placeholder="Easy / Combat"
+          placeholder="Enter difficulty and type"
           required
         />
 
@@ -52,7 +55,7 @@ function AdminContractsPage() {
           name="availability"
           value={form.availability}
           onChange={handleChange}
-          placeholder="Available or Upcoming"
+          placeholder="Available"
           required
         />
 
@@ -80,7 +83,7 @@ function AdminContractsPage() {
           type="number"
           value={form.reward}
           onChange={handleChange}
-          placeholder="200"
+          placeholder="Enter reward amount"
           required
         />
 
@@ -90,7 +93,7 @@ function AdminContractsPage() {
           type="number"
           value={form.placesAvailable}
           onChange={handleChange}
-          placeholder="3"
+          placeholder="Enter available places"
           required
         />
 
