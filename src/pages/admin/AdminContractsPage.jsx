@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Input from '../../components/forms/Input';
+import Button from '../../components/forms/Button';
 
 function AdminContractsPage() {
   const [form, setForm] = useState({
@@ -105,9 +106,7 @@ function AdminContractsPage() {
           placeholder="Enter contract description"
         />
 
-        <button type="submit" className="admin-form-button">
-          Save Contract
-        </button>
+        <Button type="submit">Save Contract</Button>
       </form>
     </section>
   );
