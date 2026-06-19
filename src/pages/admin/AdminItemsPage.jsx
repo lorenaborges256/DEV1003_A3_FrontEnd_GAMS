@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Input from '../../components/forms/Input';
+import Button from '../../components/forms/Button';
 
 function AdminItemPage() {
   const [form, setForm] = useState({
@@ -71,9 +72,7 @@ function AdminItemPage() {
           placeholder="Enter item description"
         />
 
-        <button type="submit" className="admin-form-button">
-          Save Item
-        </button>
+        <Button type="submit">Save Item</Button>
       </form>
     </section>
   );
