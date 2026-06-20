@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import ContractCard from '../components/ContractCard';
+import styles from './ContractsPage.module.scss';
 
 function ContractsPage() {
   const [contracts, setContracts] = useState([]);
@@ -52,7 +53,7 @@ function ContractsPage() {
         </select>
       </div>
       <p>Contracts ({contracts.length})</p>
-      <div className="card-grid">
+      <div className={styles.cardGrid}>
         {contracts.map((contract) => (
           <ContractCard key={contract._id} contract={contract} onViewDetails={handleViewDetails} />
         ))}
