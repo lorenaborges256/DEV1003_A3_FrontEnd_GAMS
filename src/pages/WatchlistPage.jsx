@@ -30,6 +30,32 @@ function WatchlistPage() {
     });
   };
 
+  useEffect(() => {
+    api
+      .get('/watchlist')
+      .then(async (response) => {
+        const entries = response.data;
+
+        const populated = await Promise.all(
+          entries.map(async (entry) => {
+            const endpoint =
+              entry.targetType === 'Item'
+                ? `/items/${entry.targetId}`
+                : `/contracts/${entry.targetId}`;
+            const targetResponse = await api.get(endpoint);
+            return { ...entry, targetId: targetResponse.data };
+          })
+        );
+
+        setWatchlist(populated);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError('Failed to load watchlist.');
+        setLoading(false);
+      });
+  }, []);
+
   const watchedItems = watchlist.filter((entry) => entry.targetType === 'Item');
   const watchedContracts = watchlist.filter((entry) => entry.targetType === 'Contract');
 

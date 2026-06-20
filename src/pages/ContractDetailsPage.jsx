@@ -40,8 +40,8 @@ function ContractDetailsPage() {
 
   return (
     <main className={styles.page}>
-      <button type="button" className={styles.backLink} onClick={() => navigate('/contracts')}>
-        ← Back to Contracts
+      <button type="button" className={styles.backLink} onClick={() => navigate(-1)}>
+        ← Back
       </button>
       <h2 className={styles.pageTitle}>Contract Details</h2>
       <div className={styles.card}>

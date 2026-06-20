@@ -33,6 +33,17 @@ function ContractsPage() {
     navigate(`/contracts/${id}`);
   };
 
+  const handleWatch = (id) => {
+    api
+      .post('/watchlist', { targetId: id, targetType: 'Contract' })
+      .then(() => {
+        alert('Added to watchlist!');
+      })
+      .catch(() => {
+        alert('Failed to add to watchlist.');
+      });
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
@@ -55,7 +66,12 @@ function ContractsPage() {
       <p className={styles.count}>Contracts ({contracts.length})</p>
       <div className={styles.cardGrid}>
         {contracts.map((contract) => (
-          <ContractCard key={contract._id} contract={contract} onViewDetails={handleViewDetails} />
+          <ContractCard
+            key={contract._id}
+            contract={contract}
+            onViewDetails={handleViewDetails}
+            onWatch={handleWatch}
+          />
         ))}
       </div>
     </main>

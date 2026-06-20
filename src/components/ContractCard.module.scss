@@ -67,3 +67,10 @@
   gap: spacing(sm);
   margin-top: spacing(sm);
 }
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: spacing(md);
+}

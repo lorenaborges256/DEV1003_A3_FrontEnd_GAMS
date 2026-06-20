@@ -2,7 +2,11 @@ import styles from './ContractCard.module.scss';
 import Button from './forms/Button';
 
 function ContractCard({ contract, onViewDetails, onAccept, onWatch, onUnwatch, isWatched }) {
-  const isAvailable = contract.isAvailable;
+  const isAvailable =
+    contract.isAvailable ??
+    (new Date() >= new Date(contract.startAt) &&
+      new Date() <= new Date(contract.endAt) &&
+      contract.currentAcceptances < contract.maxAcceptances);
 
   return (
     <div className={styles.card}>
@@ -31,8 +35,8 @@ function ContractCard({ contract, onViewDetails, onAccept, onWatch, onUnwatch, i
           </span>
           <p className={styles.cardDate}>
             {isAvailable
-              ? `Closes: ${new Date(contract.endAt).toLocaleDateString()}`
-              : `Opens: ${new Date(contract.startAt).toLocaleDateString()}`}
+              ? `Closes: ${new Date(contract.endAt).toLocaleDateString('en-AU')}`
+              : `Opens: ${new Date(contract.startAt).toLocaleDateString('en-AU')}`}
           </p>
           <p className={styles.cardDate}>Reward: {contract.rewardAmount} Gold</p>
           <div className={styles.cardActions}>
