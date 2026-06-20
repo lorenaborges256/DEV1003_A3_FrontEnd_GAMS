@@ -1,5 +1,35 @@
 @use '../styles/variables' as *;
 
+.page {
+  padding: spacing(xl);
+}
+
+.pageHeader {
+  margin-bottom: spacing(lg);
+}
+
+.count {
+  color: color(text-dark);
+  opacity: 0.7;
+  margin-top: spacing(xs);
+}
+
+.filters {
+  display: flex;
+  gap: spacing(md);
+  margin-bottom: spacing(lg);
+}
+
+.filters select {
+  padding: spacing(sm) spacing(md);
+  border: 1px solid color(border);
+  border-radius: radius(md);
+  background: color(card-bg);
+  color: color(text-dark);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
 .cardGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
