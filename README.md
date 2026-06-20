@@ -12,6 +12,22 @@
 
 The **Guild Availability Management System (GAMS)** front‑end is a responsive React application built for DEV1003 — Advanced Applications, providing the user interface for a MERN‑based system that supports guild members and administrators in managing items, contracts, watchlists, notifications, and dashboards. Developed with React, Vite, React Router, and SCSS Modules, the application delivers a modular, accessible, and intuitive experience through reusable components, nested routing, and a dedicated layout structure. It includes a Global Error Boundary for graceful error handling and Vitest‑based unit tests to ensure reliability, while ESLint (Airbnb rules) and Prettier enforce a consistent, professional code style. Designed to operate independently as a complete client application, this front‑end is fully prepared for integration with the existing REST API and reflects modern front‑end engineering practices aligned with the assessment requirements.
 
+For a complete walkthrough on cloning both repositories, configuring environment variables, running the full MERN stack, and testing the API endpoints, refer to the [USAGE.md](./USAGE.md) guide.
+
+
+## Table of Contents
+1. [Technologies](#1-technologies)
+2. [DRY Principles](#2-dry-principles)
+3. [Semantic HTML & Accessibility](#3-semantic-html--accessibility)
+4. [Responsive Design & CSS](#4-responsive-design--css)
+5. [Code Style & Linting](#5-code-style--linting)
+6. [Testing](#6-testing)
+7. [Error Handling](#7-error-handling)
+8. [Getting Started](#8-getting-started)
+9. [Conclusion](#9-conclusion)
+
+---
+
 ## 1. Technologies
 
 The technologies used in this project reflect the tools and practices taught throughout DEV1003 — Advanced Applications at Coder Academy. Each dependency was selected in alignment with the course curriculum, ensuring that the stack represents current industry standards and prepares the team for professional software development environments.
@@ -297,3 +313,7 @@ GAMS demonstrates a complete, production-ready React application built as the fr
 The codebase adheres consistently to the Airbnb style guide, applies DRY principles throughout, and is structured to be maintainable and scalable.
 
 The GAMS front-end is designed to integrate seamlessly with the GAMS backend REST API, consuming its secured endpoints through a centralised Axios service that attaches JWT tokens to every authenticated request. Together, the two applications form a cohesive, full-stack Guild Availability Management System.
+
+
+[1.technologies]: #1-technologies
+[2.dry-princi]: #2.dryprinciples
