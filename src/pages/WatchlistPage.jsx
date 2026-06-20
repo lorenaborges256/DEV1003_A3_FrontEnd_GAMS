@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import ItemCard from '../components/ItemCard';
 import ContractCard from '../components/ContractCard';
+import styles from './WatchlistPage.module.scss';
 
 function WatchlistPage() {
   const [watchlist, setWatchlist] = useState([]);
@@ -36,14 +37,14 @@ function WatchlistPage() {
   if (error) return <p>{error}</p>;
 
   return (
-    <main>
-      <h1>Watchlist</h1>
-      <section>
-        <h2>Items watching ({watchedItems.length})</h2>
+    <main className={styles.page}>
+      <h1 className={styles.pageTitle}>Watchlist</h1>
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Items watching ({watchedItems.length})</h2>
         {watchedItems.length === 0 ? (
-          <p>You are not watching any items.</p>
+          <p className={styles.empty}>You are not watching any items.</p>
         ) : (
-          <div className="card-grid">
+          <div className={styles.cardGrid}>
             {watchedItems.map((entry) => (
               <ItemCard
                 key={entry._id}
@@ -56,12 +57,12 @@ function WatchlistPage() {
           </div>
         )}
       </section>
-      <section>
-        <h2>Contracts watching ({watchedContracts.length})</h2>
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Contracts watching ({watchedContracts.length})</h2>
         {watchedContracts.length === 0 ? (
-          <p>You are not watching any contracts.</p>
+          <p className={styles.empty}>You are not watching any contracts.</p>
         ) : (
-          <div className="card-grid">
+          <div className={styles.cardGrid}>
             {watchedContracts.map((entry) => (
               <ContractCard
                 key={entry._id}
