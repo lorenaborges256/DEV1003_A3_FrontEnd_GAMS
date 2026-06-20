@@ -5,43 +5,51 @@ function ContractCard({ contract, onViewDetails, onAccept, onWatch, onUnwatch, i
 
   return (
     <div className={styles.card}>
-      <div className="card-image">
-        <img src={contract.imageUrl || '/icons.svg'} alt={contract.title} />
-      </div>
-      <div className="card-body">
-        <div className="card-header">
-          <h3 className="card-title">{contract.title}</h3>
-          {isWatched && (
-            <button type="button" onClick={() => onUnwatch(contract._id)}>
-              Unwatch
-            </button>
-          )}
-        </div>
-        <p className="card-category">
-          {contract.difficulty} / {contract.type}
-        </p>
-        <span className={`badge ${isAvailable ? 'badge-available' : 'badge-upcoming'}`}>
-          {isAvailable ? 'Available' : 'Upcoming'}
-        </span>
-        <p className="card-date">
-          {isAvailable ? `Closes: ${contract.endAt}` : `Opens: ${contract.startAt}`}
-        </p>
-        <p className="card-reward">Reward: {contract.rewardAmount} Gold</p>
-        <div className="card-actions">
-          <button type="button" onClick={() => onViewDetails(contract._id)}>
-            View Details
-          </button>
-          {isAvailable ? (
-            <button type="button" onClick={() => onAccept(contract._id)}>
-              Accept
-            </button>
-          ) : (
-            !isWatched && (
-              <button type="button" onClick={() => onWatch(contract._id)}>
-                Watch
+      <div className={styles.cardTop}>
+        <img
+          src={contract.imageUrl || '/icons.svg'}
+          alt={contract.title}
+          className={styles.cardImage}
+        />
+        <div className={styles.cardBody}>
+          <div className={styles.cardHeader}>
+            <h3 className={styles.cardTitle}>{contract.title}</h3>
+            {isWatched && (
+              <button type="button" onClick={() => onUnwatch(contract._id)}>
+                Unwatch
               </button>
-            )
-          )}
+            )}
+          </div>
+          <p className={styles.cardCategory}>
+            {contract.difficulty} / {contract.type}
+          </p>
+          <span
+            className={`${styles.badge} ${isAvailable ? styles.badgeAvailable : styles.badgeUpcoming}`}
+          >
+            {isAvailable ? 'Available' : 'Upcoming'}
+          </span>
+          <p className={styles.cardDate}>
+            {isAvailable
+              ? `Closes: ${new Date(contract.endAt).toLocaleDateString()}`
+              : `Opens: ${new Date(contract.startAt).toLocaleDateString()}`}
+          </p>
+          <p className={styles.cardDate}>Reward: {contract.rewardAmount} Gold</p>
+          <div className={styles.cardActions}>
+            <button type="button" onClick={() => onViewDetails(contract._id)}>
+              View Details
+            </button>
+            {isAvailable ? (
+              <button type="button" onClick={() => onAccept(contract._id)}>
+                Accept
+              </button>
+            ) : (
+              !isWatched && (
+                <button type="button" onClick={() => onWatch(contract._id)}>
+                  Watch
+                </button>
+              )
+            )}
+          </div>
         </div>
       </div>
     </div>
