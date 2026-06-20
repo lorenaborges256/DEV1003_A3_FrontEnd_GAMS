@@ -1,4 +1,5 @@
 import styles from './ContractCard.module.scss';
+import Button from './forms/Button';
 
 function ContractCard({ contract, onViewDetails, onAccept, onWatch, onUnwatch, isWatched }) {
   const isAvailable = contract.isAvailable;
@@ -15,9 +16,9 @@ function ContractCard({ contract, onViewDetails, onAccept, onWatch, onUnwatch, i
           <div className={styles.cardHeader}>
             <h3 className={styles.cardTitle}>{contract.title}</h3>
             {isWatched && (
-              <button type="button" onClick={() => onUnwatch(contract._id)}>
+              <Button type="button" onClick={() => onUnwatch(contract._id)}>
                 Unwatch
-              </button>
+              </Button>
             )}
           </div>
           <p className={styles.cardCategory}>
@@ -35,18 +36,18 @@ function ContractCard({ contract, onViewDetails, onAccept, onWatch, onUnwatch, i
           </p>
           <p className={styles.cardDate}>Reward: {contract.rewardAmount} Gold</p>
           <div className={styles.cardActions}>
-            <button type="button" onClick={() => onViewDetails(contract._id)}>
+            <Button type="button" onClick={() => onViewDetails(contract._id)}>
               View Details
-            </button>
+            </Button>
             {isAvailable ? (
-              <button type="button" onClick={() => onAccept(contract._id)}>
+              <Button type="button" onClick={() => onAccept(contract._id)}>
                 Accept
-              </button>
+              </Button>
             ) : (
               !isWatched && (
-                <button type="button" onClick={() => onWatch(contract._id)}>
+                <Button type="button" onClick={() => onWatch(contract._id)}>
                   Watch
-                </button>
+                </Button>
               )
             )}
           </div>
