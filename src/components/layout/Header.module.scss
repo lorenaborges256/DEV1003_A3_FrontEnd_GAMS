@@ -203,3 +203,37 @@
     }
   }
 }
+.dropdownWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.iconButton {
+  @include button-reset;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.profileDropdown {
+  width: 120px;
+  right: 0;
+}
+
+.logoutButton {
+  @include button-reset;
+  width: 100%;
+  padding: 12px;
+  text-align: left;
+  color: color(error);
+  font-weight: bold;
+  cursor: pointer;
+  
+  &:hover {
+    background: rgba(0,0,0,0.05);
+  }
+}
