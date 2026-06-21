@@ -37,8 +37,14 @@ function LoginPage() {
       });
       // Store the JWT token so all future API calls are authenticated
       localStorage.setItem('token', response.data.token);
-      // Navigate to the dashboard
-      navigate('/dashboard');
+      localStorage.setItem('userRole', response.data.user.role);
+      const userRole = response.data.user.role; // Get the role from the response
+        
+      if (userRole === 'admin') {
+        navigate('/admin'); // Redirect admins to /admin
+      } else {
+        navigate('/dashboard'); // Redirect regular users to /dashboard
+      }
     } catch (error) {
       const message =
         error.response?.data?.message || 'Login failed. Please try again.';
