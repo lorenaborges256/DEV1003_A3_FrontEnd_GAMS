@@ -12,7 +12,10 @@ function ContractDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [accepted, setAccepted] = useState(false);
+  const [acceptedIds, setAcceptedIds] = useState(() => {
+    const stored = localStorage.getItem('acceptedContracts');
+    return stored ? JSON.parse(stored) : [];
+  });
 
   useEffect(() => {
     api
@@ -28,14 +31,16 @@ function ContractDetailsPage() {
   }, [id]);
 
   const handleAccept = () => {
-    if (accepted) {
+    if (acceptedIds.includes(id)) {
       alert('You have already accepted this contract.');
       return;
     }
     api
       .post(`/contracts/${id}/accept`)
       .then(() => {
-        setAccepted(true);
+        const updated = [...acceptedIds, id];
+        setAcceptedIds(updated);
+        localStorage.setItem('acceptedContracts', JSON.stringify(updated));
         setShowModal(true);
       })
       .catch(() => {

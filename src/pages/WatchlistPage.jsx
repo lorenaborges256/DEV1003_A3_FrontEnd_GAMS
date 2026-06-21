@@ -13,6 +13,7 @@ function WatchlistPage() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [acceptedContract, setAcceptedContract] = useState(null);
+  const [acceptedIds, setAcceptedIds] = useState([]);
 
   useEffect(() => {
     api
@@ -34,10 +35,15 @@ function WatchlistPage() {
   };
 
   const handleAccept = (id) => {
+    if (acceptedIds.includes(id)) {
+      alert('You have already accepted this contract.');
+      return;
+    }
     const entry = watchlist.find((e) => e._id === id || e.targetId._id === id);
     api
       .post(`/contracts/${id}/accept`)
       .then(() => {
+        setAcceptedIds((previous) => [...previous, id]);
         setAcceptedContract(entry.targetId);
         setShowModal(true);
       })
