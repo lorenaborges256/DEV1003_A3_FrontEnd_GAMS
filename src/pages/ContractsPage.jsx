@@ -14,7 +14,10 @@ function ContractsPage() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [acceptedContract, setAcceptedContract] = useState(null);
-  const [acceptedIds, setAcceptedIds] = useState([]);
+  const [acceptedIds, setAcceptedIds] = useState(() => {
+    const stored = localStorage.getItem('acceptedContracts');
+    return stored ? JSON.parse(stored) : [];
+  });
 
   useEffect(() => {
     const params = {};
@@ -57,7 +60,9 @@ function ContractsPage() {
     api
       .post(`/contracts/${id}/accept`)
       .then(() => {
-        setAcceptedIds((previous) => [...previous, id]);
+        const updated = [...acceptedIds, id];
+        setAcceptedIds(updated);
+        localStorage.setItem('acceptedContracts', JSON.stringify(updated));
         setAcceptedContract(contract);
         setShowModal(true);
       })
