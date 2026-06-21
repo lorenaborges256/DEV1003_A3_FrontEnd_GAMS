@@ -36,7 +36,7 @@ function RegisterForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
     if (!validate()) return;
 

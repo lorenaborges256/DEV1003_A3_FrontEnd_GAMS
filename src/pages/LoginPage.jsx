@@ -12,7 +12,7 @@ function LoginPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const newErrors = {};
     if (!form.email) newErrors.email = 'Email is required';
