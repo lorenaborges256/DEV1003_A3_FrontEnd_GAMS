@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import styles from './ContractDetailsPage.module.scss';
 import Button from '../components/forms/Button';
+import AcceptModal from '../components/AcceptModal';
 
 function ContractDetailsPage() {
   const { id } = useParams();
@@ -10,6 +11,7 @@ function ContractDetailsPage() {
   const [contract, setContract] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     api
@@ -28,7 +30,7 @@ function ContractDetailsPage() {
     api
       .post(`/contracts/${id}/accept`)
       .then(() => {
-        alert('Contract accepted successfully!');
+        setShowModal(true);
       })
       .catch(() => {
         alert('Failed to accept contract.');
@@ -40,6 +42,7 @@ function ContractDetailsPage() {
 
   return (
     <main className={styles.page}>
+      {showModal && <AcceptModal contract={contract} onClose={() => setShowModal(false)} />}
       <button type="button" className={styles.backLink} onClick={() => navigate(-1)}>
         ← Back
       </button>
