@@ -72,14 +72,14 @@ Create a file named `.env` in the root of your **backend** folder. Add the follo
 
 ```env
 # Database Connections
-LOCAL_DB_URI=mongodb+srv://<username>:<password>@<cluster-url>/gams_db
-DATABASE_URI=mongodb+srv://<username>:<password>@<cluster-url>/gams_db
+PORT=5000
+MONGODB_URI=mongodb+srv://<username>:<password>@<cluster-url>.mongodb.net/gams_db
 
 # Security
-JWT_SECRET_KEY=your_secure_random_string_here
+JWT_SECRET=your_secret_key_here
 TOKEN_HEADER_KEY=authorization
 ```
-- *(Replace `<username>`, `<password>`, and `<cluster-url>` with your actual MongoDB Atlas credentials).*  
+- *Replace `<username>`, `<password>`, and `<cluster-url>` with your actual MongoDB Atlas credentials.*  
 - Generate JWT secret key in console with ```node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"```
 
 ### Frontend `.env`
@@ -96,7 +96,16 @@ VITE_API_URL=http://localhost:5000
 To run the full MERN stack, you must run both the backend and frontend simultaneously using **two separate terminal windows**.
 
 ### Starting the Backend Server
-In your first terminal (inside the backend folder), run:
+In your first terminal, navigate to the backend directory and execute the seeding script to populate the database with initial data:
+
+```bash
+npm run seed
+```
+>Note on Administrative Access: By default, the seeding process designates one specific user with the Admin role. In a production environment, you can manually elevate a user's privileges by changing their role from 'user' to 'admin' directly within the MongoDB Atlas interface.
+For future iterations, we recommend implementing a "User Management" feature within the Admin Dashboard. This would allow existing administrators to securely promote other users to admin status directly through the application UI.
+
+
+Once the database is seeded, start the backend application in development mode:
 
 ```bash
 npm run dev
@@ -116,17 +125,17 @@ npm run dev
 You should see Vite start the server, typically at:
 ```
   VITE v5.x.x  ready in xxx ms
-  ➜  Local:   http://localhost:3000/
+  ➜  Local:  http://localhost:5173
 ```
 
 ### Accessing the App
-Open your web browser and navigate to `http://localhost:3000`. The React frontend will load and automatically fetch data from your backend API running on port 5000.
+Open your web browser and navigate to `http://localhost:5173`. The React frontend will load and automatically fetch data from your backend API running on port 5000.
 
 ---
 
 ## 6. API Endpoints Reference
 
-Below is a reference of the core API endpoints provided by the GAMS backend. You can test these using tools like [Insomnia](https://insomnia.rest/) or Postman.
+Below is a reference of the core API endpoints provided by the GAMS backend. You can test these using tools like Bruno, Insomnia or Postman.
 
 *Note: Most endpoints require a valid JWT token passed in the `Authorization` header (`Bearer <token>`).*
 
@@ -136,7 +145,7 @@ Below is a reference of the core API endpoints provided by the GAMS backend. You
 | POST | `/auth/register` | No | Register a new Guild Member |
 | POST | `/auth/login` | No | Authenticate user and receive JWT |
 
-### Artifacts (Inventory-Based)
+### Items (Inventory-Based)
 | Method | Endpoint | Auth Required | Description |
 |---|---|---|---|
 | GET | `/items` | Yes | List all available artifacts |
@@ -153,7 +162,7 @@ Below is a reference of the core API endpoints provided by the GAMS backend. You
 | POST | `/contracts/:id/accept` | Yes | Accept a contract (generates instructions) |
 | POST | `/contracts` | Admin | Create a new contract |
 
-### Watchlists & Notifications
+### Watchlists
 | Method | Endpoint | Auth Required | Description |
 |---|---|---|---|
 | GET | `/watchlist` | Yes | View user's watched items/contracts |
@@ -163,9 +172,6 @@ Below is a reference of the core API endpoints provided by the GAMS backend. You
 ### User Dashboard
 | Method | Endpoint | Auth Required | Description |
 |---|---|---|---|
-| GET | `/users/my-profile` | Yes | View user profile, active reservations, and accepted contracts |
+| GET | `/dashboard` | Yes | View user active reservations, Items, and accepted contracts |
 
 ---
-
----
-*Documentation generated for DEV1003 - Assessment 2 & 3*
