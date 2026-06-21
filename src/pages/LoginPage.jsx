@@ -18,10 +18,6 @@ function LoginPage() {
     if (!form.email) newErrors.email = 'Email is required';
     if (!form.password) newErrors.password = 'Password is required';
     setErrors(newErrors);
-<<<<<<< Updated upstream
-    if (Object.keys(newErrors).length === 0) {
-      // TODO: call auth API
-=======
     if (Object.keys(newErrors).length > 0) return;
 
     // Call the backend
@@ -47,7 +43,6 @@ function LoginPage() {
       setServerError(message);
     } finally {
       setLoading(false);
->>>>>>> Stashed changes
     }
   }
 

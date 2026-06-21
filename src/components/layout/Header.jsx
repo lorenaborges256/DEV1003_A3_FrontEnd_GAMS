@@ -2,8 +2,6 @@ import NavLinks from './NavLinks';
 import styles from './Header.module.scss';
 
 function Header({ onToggleMenu }) {
-<<<<<<< Updated upstream
-=======
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -43,7 +41,6 @@ function Header({ onToggleMenu }) {
     navigate('/login'); // Redirect to login page
   };
 
->>>>>>> Stashed changes
   return (
     <header className={styles.header}>
       <div className={styles.left}>
@@ -56,19 +53,11 @@ function Header({ onToggleMenu }) {
         </div>
       </div>
 
-<<<<<<< Updated upstream
-      {/* Navigation - Only visible on Tablet */}
-=======
->>>>>>> Stashed changes
       <nav className={styles.tabletNav}>
         <NavLinks />
       </nav>
 
       <div className={styles.right}>
-<<<<<<< Updated upstream
-        <span className={styles.icon}>🔔</span>
-        <span className={styles.icon}>👤</span>
-=======
         {/* 1. BELL ICON & NOTIFICATION MENU */}
         <div className={styles.dropdownWrapper} ref={notifRef}>
           <button
@@ -132,7 +121,6 @@ function Header({ onToggleMenu }) {
             </div>
           )}
         </div>
->>>>>>> Stashed changes
       </div>
     </header>
   );

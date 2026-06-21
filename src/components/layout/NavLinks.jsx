@@ -2,15 +2,11 @@ import { NavLink } from 'react-router-dom';
 import styles from './NavLinks.module.scss';
 
 function NavLinks({ onClick }) {
-<<<<<<< Updated upstream
-  const links = [
-=======
   // Get the role from localStorage
   const role = localStorage.getItem('userRole');
 
   // Define links for regular users
   const userLinks = [
->>>>>>> Stashed changes
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
     { path: '/items', label: 'Items', icon: '⚔️' },
     { path: '/contracts', label: 'Contracts', icon: '📜' },

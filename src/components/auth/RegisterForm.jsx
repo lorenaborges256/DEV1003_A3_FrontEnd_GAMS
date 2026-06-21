@@ -38,10 +38,6 @@ function RegisterForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-<<<<<<< Updated upstream
-    if (validate()) {
-      // TODO: Call your registration API here
-=======
     if (!validate()) return;
 
     // Call the backend
@@ -63,7 +59,6 @@ function RegisterForm() {
       setServerError(message);
     } finally {
       setLoading(false);
->>>>>>> Stashed changes
     }
   };
 
