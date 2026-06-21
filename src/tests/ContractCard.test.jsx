@@ -55,3 +55,90 @@ test('shows Available badge when contract is active', () => {
 
   expect(screen.getByText('Available')).toBeInTheDocument();
 });
+
+test('shows Upcoming badge when contract has not started', () => {
+  render(
+    <ContractCard
+      contract={mockContractUpcoming}
+      onViewDetails={() => {}}
+      onAccept={() => {}}
+      onWatch={() => {}}
+      onUnwatch={() => {}}
+      isWatched={false}
+    />
+  );
+
+  expect(screen.getByText('Upcoming')).toBeInTheDocument();
+});
+
+test('calls onViewDetails when View Details is clicked', () => {
+  const onViewDetails = vi.fn();
+
+  render(
+    <ContractCard
+      contract={mockContract}
+      onViewDetails={onViewDetails}
+      onAccept={() => {}}
+      onWatch={() => {}}
+      onUnwatch={() => {}}
+      isWatched={false}
+    />
+  );
+
+  fireEvent.click(screen.getByText('View Details'));
+  expect(onViewDetails).toHaveBeenCalledWith('1');
+});
+
+test('calls onAccept when Accept is clicked', () => {
+  const onAccept = vi.fn();
+
+  render(
+    <ContractCard
+      contract={mockContract}
+      onViewDetails={() => {}}
+      onAccept={onAccept}
+      onWatch={() => {}}
+      onUnwatch={() => {}}
+      isWatched={false}
+    />
+  );
+
+  fireEvent.click(screen.getByText('Accept'));
+  expect(onAccept).toHaveBeenCalledWith('1');
+});
+
+test('calls onWatch when Watch is clicked for upcoming contract', () => {
+  const onWatch = vi.fn();
+
+  render(
+    <ContractCard
+      contract={mockContractUpcoming}
+      onViewDetails={() => {}}
+      onAccept={() => {}}
+      onWatch={onWatch}
+      onUnwatch={() => {}}
+      isWatched={false}
+    />
+  );
+
+  fireEvent.click(screen.getByText('Watch'));
+  expect(onWatch).toHaveBeenCalledWith('1');
+});
+
+test('calls onUnwatch when Unwatch is clicked', () => {
+  const onUnwatch = vi.fn();
+
+  render(
+    <ContractCard
+      contract={mockContractUpcoming}
+      onViewDetails={() => {}}
+      onAccept={() => {}}
+      onWatch={() => {}}
+      onUnwatch={onUnwatch}
+      isWatched={true}
+    />
+  );
+
+  fireEvent.click(screen.getByText('Unwatch'));
+  expect(onUnwatch).toHaveBeenCalledWith('1');
+});
