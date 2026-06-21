@@ -14,6 +14,7 @@ function ContractsPage() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [acceptedContract, setAcceptedContract] = useState(null);
+  const [acceptedIds, setAcceptedIds] = useState([]);
 
   useEffect(() => {
     const params = {};
@@ -48,10 +49,15 @@ function ContractsPage() {
   };
 
   const handleAccept = (id) => {
+    if (acceptedIds.includes(id)) {
+      alert('You have already accepted this contract.');
+      return;
+    }
     const contract = contracts.find((c) => c._id === id);
     api
       .post(`/contracts/${id}/accept`)
       .then(() => {
+        setAcceptedIds((previous) => [...previous, id]);
         setAcceptedContract(contract);
         setShowModal(true);
       })
