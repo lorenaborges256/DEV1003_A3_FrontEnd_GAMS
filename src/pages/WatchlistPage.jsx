@@ -4,12 +4,15 @@ import api from '../services/api';
 import ItemCard from '../components/ItemCard';
 import ContractCard from '../components/ContractCard';
 import styles from './WatchlistPage.module.scss';
+import AcceptModal from '../components/AcceptModal';
 
 function WatchlistPage() {
   const [watchlist, setWatchlist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [acceptedContract, setAcceptedContract] = useState(null);
 
   useEffect(() => {
     api
@@ -28,6 +31,19 @@ function WatchlistPage() {
     api.delete(`/watchlist/${id}`).then(() => {
       setWatchlist((previous) => previous.filter((entry) => entry._id !== id));
     });
+  };
+
+  const handleAccept = (id) => {
+    const entry = watchlist.find((e) => e._id === id || e.targetId._id === id);
+    api
+      .post(`/contracts/${id}/accept`)
+      .then(() => {
+        setAcceptedContract(entry.targetId);
+        setShowModal(true);
+      })
+      .catch(() => {
+        alert('Failed to accept contract.');
+      });
   };
 
   useEffect(() => {
@@ -64,6 +80,7 @@ function WatchlistPage() {
 
   return (
     <main className={styles.page}>
+      {showModal && <AcceptModal contract={acceptedContract} onClose={() => setShowModal(false)} />}
       <h1 className={styles.pageTitle}>Watchlist</h1>
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>Items watching ({watchedItems.length})</h2>
@@ -94,6 +111,7 @@ function WatchlistPage() {
                 key={entry._id}
                 contract={entry.targetId}
                 isWatched
+                onAccept={handleAccept}
                 onUnwatch={() => handleUnwatch(entry._id)}
                 onViewDetails={(id) => navigate(`/contracts/${id}`)}
               />
