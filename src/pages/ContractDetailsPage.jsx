@@ -12,6 +12,7 @@ function ContractDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [accepted, setAccepted] = useState(false);
 
   useEffect(() => {
     api
@@ -27,9 +28,14 @@ function ContractDetailsPage() {
   }, [id]);
 
   const handleAccept = () => {
+    if (accepted) {
+      alert('You have already accepted this contract.');
+      return;
+    }
     api
       .post(`/contracts/${id}/accept`)
       .then(() => {
+        setAccepted(true);
         setShowModal(true);
       })
       .catch(() => {
