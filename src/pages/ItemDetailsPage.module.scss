@@ -1,0 +1,100 @@
+@use '../styles/variables' as *;
+
+.page {
+  padding: spacing(xl);
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing(xs);
+  color: color(text-dark);
+  font-size: 0.875rem;
+  margin-bottom: spacing(md);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.pageTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: spacing(lg);
+}
+
+.card {
+  background: color(card-bg);
+  border: 1px solid color(border);
+  border-radius: radius(lg);
+  padding: spacing(xl);
+  margin-top: spacing(lg);
+  display: flex;
+  gap: spacing(xl);
+  align-items: flex-start;
+  max-width: 900px;
+}
+
+.cardImage {
+  width: 350px;
+  height: 350px;
+  background: color(border);
+  border-radius: radius(md);
+  flex-shrink: 0;
+  object-fit: cover;
+  align-self: center;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(sm);
+  flex: 1;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.category {
+  color: color(text-dark);
+  opacity: 0.7;
+}
+
+.price {
+  font-weight: 600;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px spacing(sm);
+  border-radius: radius(sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.badgeAvailable {
+  background: color(success);
+  color: white;
+}
+
+.badgeUnavailable {
+  background: color(error);
+  color: white;
+}
+
+.descriptionTitle {
+  font-weight: 700;
+  margin-top: spacing(md);
+}
+
+.description {
+  line-height: 1.6;
+}
+
+.actions {
+  margin-top: spacing(md);
+  display: flex;
+}
