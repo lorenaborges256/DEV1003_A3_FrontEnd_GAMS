@@ -1,0 +1,61 @@
+@use '../styles/variables' as *;
+
+.page {
+  padding: spacing(xl);
+}
+
+.pageTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: spacing(xl);
+}
+
+.empty {
+  color: color(text-dark);
+  opacity: 0.6;
+}
+
+.count {
+  color: color(text-dark);
+  opacity: 0.7;
+  margin-bottom: spacing(lg);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(md);
+  max-width: 800px;
+}
+
+.item {
+  background: color(card-bg);
+  border: 1px solid color(border);
+  border-radius: radius(lg);
+  padding: spacing(lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: spacing(md);
+}
+
+.itemUnread {
+  border-left: 4px solid color(primary);
+}
+
+.message {
+  flex: 1;
+  font-size: 0.95rem;
+}
+
+.status {
+  font-size: 0.75rem;
+  opacity: 0.6;
+  margin-top: spacing(xs);
+}
+
+.actions {
+  display: flex;
+  gap: spacing(sm);
+  flex-shrink: 0;
+}

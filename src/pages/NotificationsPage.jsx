@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api';
+import styles from './NotificationsPage.module.scss';
+import Button from '../components/forms/Button';
 
 function NotificationsPage() {
   const [notifications, setNotifications] = useState([]);
@@ -40,30 +42,37 @@ function NotificationsPage() {
 
   if (notifications.length === 0) {
     return (
-      <main>
-        <h1>Notifications</h1>
-        <p>You have no notifications.</p>
+      <main className={styles.page}>
+        <h1 className={styles.pageTitle}>Notifications</h1>
+        <p className={styles.empty}>You have no notifications.</p>
       </main>
     );
   }
 
   return (
-    <main>
-      <h1>Notifications</h1>
-      <p>Notifications ({notifications.length})</p>
-      <ul>
+    <main className={styles.page}>
+      <h1 className={styles.pageTitle}>Notifications</h1>
+      <p className={styles.count}>Notifications ({notifications.length})</p>
+      <ul className={styles.list}>
         {notifications.map((notification) => (
-          <li key={notification._id}>
-            <p>{notification.message}</p>
-            <span>{notification.status}</span>
-            {notification.status === 'unread' && (
-              <button type="button" onClick={() => handleMarkAsRead(notification._id)}>
-                Mark as read
-              </button>
-            )}
-            <button type="button" onClick={() => handleDelete(notification._id)}>
-              Delete
-            </button>
+          <li
+            key={notification._id}
+            className={`${styles.item} ${notification.status === 'unread' ? styles.itemUnread : ''}`}
+          >
+            <div>
+              <p className={styles.message}>{notification.message}</p>
+              <span className={styles.status}>{notification.status}</span>
+            </div>
+            <div className={styles.actions}>
+              {notification.status === 'unread' && (
+                <Button type="button" onClick={() => handleMarkAsRead(notification._id)}>
+                  Mark as read
+                </Button>
+              )}
+              <Button type="button" onClick={() => handleDelete(notification._id)}>
+                Delete
+              </Button>
+            </div>
           </li>
         ))}
       </ul>

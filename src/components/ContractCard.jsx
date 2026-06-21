@@ -1,45 +1,60 @@
+import styles from './ContractCard.module.scss';
+import Button from './forms/Button';
+
 function ContractCard({ contract, onViewDetails, onAccept, onWatch, onUnwatch, isWatched }) {
-  const isAvailable = contract.isAvailable;
+  const isAvailable =
+    contract.isAvailable ??
+    (new Date() >= new Date(contract.startAt) &&
+      new Date() <= new Date(contract.endAt) &&
+      contract.currentAcceptances < contract.maxAcceptances);
 
   return (
-    <div className="card">
-      <div className="card-image">
-        <img src={contract.imageUrl || '/icons.svg'} alt={contract.title} />
-      </div>
-      <div className="card-body">
-        <div className="card-header">
-          <h3 className="card-title">{contract.title}</h3>
-          {isWatched && (
-            <button type="button" onClick={() => onUnwatch(contract._id)}>
-              Unwatch
-            </button>
-          )}
-        </div>
-        <p className="card-category">
-          {contract.difficulty} / {contract.type}
-        </p>
-        <span className={`badge ${isAvailable ? 'badge-available' : 'badge-upcoming'}`}>
-          {isAvailable ? 'Available' : 'Upcoming'}
-        </span>
-        <p className="card-date">
-          {isAvailable ? `Closes: ${contract.endAt}` : `Opens: ${contract.startAt}`}
-        </p>
-        <p className="card-reward">Reward: {contract.rewardAmount} Gold</p>
-        <div className="card-actions">
-          <button type="button" onClick={() => onViewDetails(contract._id)}>
-            View Details
-          </button>
-          {isAvailable ? (
-            <button type="button" onClick={() => onAccept(contract._id)}>
-              Accept
-            </button>
-          ) : (
-            !isWatched && (
-              <button type="button" onClick={() => onWatch(contract._id)}>
-                Watch
-              </button>
-            )
-          )}
+    <div className={styles.card}>
+      <div className={styles.cardTop}>
+        <img
+          src={contract.imageUrl || '/icons.svg'}
+          alt={contract.title}
+          className={styles.cardImage}
+        />
+        <div className={styles.cardBody}>
+          <div className={styles.cardHeader}>
+            <h3 className={styles.cardTitle}>{contract.title}</h3>
+            {isWatched && (
+              <Button type="button" onClick={() => onUnwatch(contract._id)}>
+                Unwatch
+              </Button>
+            )}
+          </div>
+          <p className={styles.cardCategory}>
+            {contract.difficulty} / {contract.type}
+          </p>
+          <span
+            className={`${styles.badge} ${isAvailable ? styles.badgeAvailable : styles.badgeUpcoming}`}
+          >
+            {isAvailable ? 'Available' : 'Upcoming'}
+          </span>
+          <p className={styles.cardDate}>
+            {isAvailable
+              ? `Closes: ${new Date(contract.endAt).toLocaleDateString('en-AU')}`
+              : `Opens: ${new Date(contract.startAt).toLocaleDateString('en-AU')}`}
+          </p>
+          <p className={styles.cardDate}>Reward: {contract.rewardAmount} Gold</p>
+          <div className={styles.cardActions}>
+            <Button type="button" onClick={() => onViewDetails(contract._id)}>
+              View Details
+            </Button>
+            {isAvailable ? (
+              <Button type="button" onClick={() => onAccept(contract._id)}>
+                Accept
+              </Button>
+            ) : (
+              !isWatched && (
+                <Button type="button" onClick={() => onWatch(contract._id)}>
+                  Watch
+                </Button>
+              )
+            )}
+          </div>
         </div>
       </div>
     </div>
