@@ -80,8 +80,10 @@
 
 .right {
   display: flex;
+  align-items: center;
   gap: spacing(md);
-  font-size: 1.2rem;
+  position: relative;
+  z-index: 1001;
 }
 
 .notificationWrapper {
@@ -97,6 +99,23 @@
   align-items: center;
   justify-content: center;
   padding: spacing(xs);
+}
+
+.iconButton {
+  @include button-reset;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 1.4rem;
+  z-index: 1010; /* Even higher to ensure it catches the click */
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 50%;
+  }
 }
 
 .badge {
@@ -120,22 +139,24 @@
 .dropdown {
   position: absolute;
   top: 100%;
-  right: -10px; // Align slightly to the right edge
-  margin-top: spacing(sm);
-  width: 300px;
-  background: color(card-bg);
-  border: 1px solid color(border);
+  right: 0; /* Align to the right of its specific wrapper */
+  margin-top: 10px;
+  width: 280px;
+  background: white;
+  border: 1px solid #ddd;
   border-radius: radius(md);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 200; // Ensure it sits above layout content and mobile overlay
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
 
   @include mobile {
     width: 280px;
     right: -40px; // Adjust for mobile screen edges
   }
+}
+
+.profileDropdown {
+  width: 150px;
+  right: 0;
 }
 
 .dropdownHeader {
