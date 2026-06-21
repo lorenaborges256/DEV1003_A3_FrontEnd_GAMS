@@ -18,8 +18,36 @@ function LoginPage() {
     if (!form.email) newErrors.email = 'Email is required';
     if (!form.password) newErrors.password = 'Password is required';
     setErrors(newErrors);
+<<<<<<< Updated upstream
     if (Object.keys(newErrors).length === 0) {
       // TODO: call auth API
+=======
+    if (Object.keys(newErrors).length > 0) return;
+
+    // Call the backend
+    setLoading(true);
+    setServerError('');
+    try {
+      const response = await api.post('/auth/login', {
+        email: form.email,
+        password: form.password,
+      });
+      // Store the JWT token so all future API calls are authenticated
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userRole', response.data.user.role);
+      const userRole = response.data.user.role; // Get the role from the response
+
+      if (userRole === 'admin') {
+        navigate('/admin'); // Redirect admins to /admin
+      } else {
+        navigate('/dashboard'); // Redirect regular users to /dashboard
+      }
+    } catch (error) {
+      const message = error.response?.data?.message || 'Login failed. Please try again.';
+      setServerError(message);
+    } finally {
+      setLoading(false);
+>>>>>>> Stashed changes
     }
   }
 

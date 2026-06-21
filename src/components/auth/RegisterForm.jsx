@@ -38,8 +38,32 @@ function RegisterForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+<<<<<<< Updated upstream
     if (validate()) {
       // TODO: Call your registration API here
+=======
+    if (!validate()) return;
+
+    // Call the backend
+    setLoading(true);
+    setServerError('');
+    try {
+      const response = await api.post('/auth/register', {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+      });
+      // Store the JWT token returned on registration
+      localStorage.setItem('token', response.data.token);
+      // Navigate to the dashboard
+      navigate('/dashboard');
+    } catch (error) {
+      // The backend will return a message like "Email already registered"
+      const message = error.response?.data?.message || 'Registration failed. Please try again.';
+      setServerError(message);
+    } finally {
+      setLoading(false);
+>>>>>>> Stashed changes
     }
   };
 
