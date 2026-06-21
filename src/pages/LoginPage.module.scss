@@ -19,3 +19,8 @@
     background-color: #000000;
   }
 }
+.serverError {
+  color: color(error);
+  font-size: 0.85rem;
+  margin-bottom: spacing(sm);
+}
