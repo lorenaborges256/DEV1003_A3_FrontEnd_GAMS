@@ -50,8 +50,9 @@ function RegisterForm() {
         email: form.email,
         password: form.password,
       });
-      // Store the JWT token returned on registration
+      // Store the JWT token and role returned on registration
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userRole', response.data.user.role);
       // Navigate to the dashboard
       navigate('/dashboard');
     } catch (error) {
