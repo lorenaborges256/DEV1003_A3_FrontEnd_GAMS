@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import styles from './ContractDetailsPage.module.scss';
 import Button from '../components/forms/Button';
+import AcceptModal from '../components/AcceptModal';
 
 function ContractDetailsPage() {
   const { id } = useParams();
@@ -10,6 +11,11 @@ function ContractDetailsPage() {
   const [contract, setContract] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [acceptedIds, setAcceptedIds] = useState(() => {
+    const stored = localStorage.getItem('acceptedContracts');
+    return stored ? JSON.parse(stored) : [];
+  });
 
   useEffect(() => {
     api
@@ -25,10 +31,17 @@ function ContractDetailsPage() {
   }, [id]);
 
   const handleAccept = () => {
+    if (acceptedIds.includes(id)) {
+      alert('You have already accepted this contract.');
+      return;
+    }
     api
       .post(`/contracts/${id}/accept`)
       .then(() => {
-        alert('Contract accepted successfully!');
+        const updated = [...acceptedIds, id];
+        setAcceptedIds(updated);
+        localStorage.setItem('acceptedContracts', JSON.stringify(updated));
+        setShowModal(true);
       })
       .catch(() => {
         alert('Failed to accept contract.');
@@ -40,6 +53,7 @@ function ContractDetailsPage() {
 
   return (
     <main className={styles.page}>
+      {showModal && <AcceptModal contract={contract} onClose={() => setShowModal(false)} />}
       <button type="button" className={styles.backLink} onClick={() => navigate(-1)}>
         ← Back
       </button>

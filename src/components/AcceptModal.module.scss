@@ -1,0 +1,46 @@
+@use '../styles/variables' as *;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  background: color(card-bg);
+  border-radius: radius(lg);
+  padding: spacing(xl);
+  max-width: 480px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: spacing(md);
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: color(primary);
+}
+
+.contractTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: color(text-dark);
+}
+
+.instructions {
+  font-size: 0.9rem;
+  color: color(text-dark);
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: spacing(sm);
+}
