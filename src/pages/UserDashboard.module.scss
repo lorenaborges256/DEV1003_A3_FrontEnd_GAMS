@@ -1,0 +1,106 @@
+@use "sass:map";
+
+// Assuming you have a variables file, if not, I'll use standard colors
+$primary-color: #4a148c; // Purple theme based on your screenshot
+$text-main: #333;
+$text-light: #666;
+$border-color: #ddd;
+$bg-light: #f9f9f9;
+
+.dashboard {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+
+  .header {
+    margin-bottom: 2rem;
+    
+    .titleGroup {
+      h1 {
+        font-size: 2rem;
+        color: $text-main;
+        margin-bottom: 0.5rem;
+      }
+      
+      .subtitle {
+        color: $text-light;
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .tabs {
+    display: flex;
+    gap: 1rem;
+    border-bottom: 2px solid $border-color;
+    margin-bottom: 2rem;
+
+    .tab {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      background: none;
+      font-weight: 600;
+      cursor: pointer;
+      color: $text-light;
+      transition: all 0.3s ease;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+
+      &:hover {
+        color: $primary-color;
+      }
+
+      &.active {
+        color: $primary-color;
+        border-bottom: 3px solid $primary-color;
+      }
+    }
+  }
+
+  .content {
+    .section {
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: $text-main;
+      }
+
+      .empty {
+        text-align: center;
+        padding: 3rem;
+        background: $bg-light;
+        border-radius: 8px;
+        color: $text-light;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+    }
+  }
+
+  .loading, .error {
+    text-align: center;
+    padding: 5rem;
+    font-size: 1.2rem;
+  }
+
+  .error {
+    color: #d32f2f;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 1rem;
+    
+    .tabs {
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+  }
+}
