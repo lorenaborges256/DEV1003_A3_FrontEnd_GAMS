@@ -1,61 +1,37 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ItemCard from '../components/ItemCard';
 import ContractCard from '../components/ContractCard';
+import api from '../services/api';
 
-const reservedItems = [
-  {
-    _id: '1',
-    name: 'Item Name',
-    category: 'Category',
-    price: 50,
-    stockQuantity: 1,
-    imageUrl: '',
-  },
-  {
-    _id: '2',
-    name: 'Item Name',
-    category: 'Category',
-    price: 80,
-    stockQuantity: 1,
-    imageUrl: '',
-  },
-  {
-    _id: '3',
-    name: 'Item Name',
-    category: 'Category',
-    price: 100,
-    stockQuantity: 1,
-    imageUrl: '',
-  },
-];
-
-const acceptedContracts = [
-  {
-    _id: '1',
-    title: 'Contract Title',
-    difficulty: 'Difficulty',
-    type: 'Type',
-    isAvailable: true,
-    endAt: '20 Mar',
-    rewardAmount: 200,
-    imageUrl: '',
-  },
-  {
-    _id: '2',
-    title: 'Contract Title',
-    difficulty: 'Difficulty',
-    type: 'Type',
-    isAvailable: true,
-    endAt: '25 Mar',
-    rewardAmount: 500,
-    imageUrl: '',
-  },
-];
 
 function UserDashboard() {
+  const [reservedItems, setReservedItems] = useState([]);
+  const [acceptedContracts, setAcceptedContracts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('items');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // 4. Fetch the real data from your backend
+        const [itemsRes, contractsRes] = await Promise.all([
+          api.get('/items/reserved'),
+          api.get('/contracts/accepted')
+        ]);
+        setReservedItems(itemsRes.data);
+        setAcceptedContracts(contractsRes.data);
+      } catch (err) {
+        console.error("Error fetching dashboard data", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
 
   return (
     <section>
