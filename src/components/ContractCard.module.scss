@@ -1,0 +1,76 @@
+@use '../styles/variables' as *;
+
+.card {
+  background: color(card-bg);
+  border: 1px solid color(border);
+  border-radius: radius(lg);
+  padding: spacing(lg);
+  display: flex;
+  flex-direction: column;
+  gap: spacing(md);
+}
+
+.cardTop {
+  display: flex;
+  gap: spacing(md);
+  align-items: center;
+}
+
+.cardImage {
+  width: 120px;
+  height: 120px;
+  background: color(border);
+  border-radius: radius(md);
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(xs);
+}
+
+.cardTitle {
+  font-weight: 700;
+  font-size: 1rem;
+  color: color(text-dark);
+}
+
+.cardCategory {
+  font-size: 0.875rem;
+  color: color(text-dark);
+  opacity: 0.7;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px spacing(sm);
+  border-radius: radius(sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.badgeAvailable {
+  background: color(success);
+  color: white;
+}
+
+.badgeUpcoming {
+  background: color(warning);
+  color: white;
+}
+
+.cardActions {
+  display: flex;
+  gap: spacing(sm);
+  margin-top: spacing(sm);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: spacing(md);
+}

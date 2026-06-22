@@ -1,65 +1,94 @@
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import AuthCard from '../components/auth/AuthCard';
 import Input from '../components/forms/Input';
+import Button from '../components/forms/Button';
+import api from '../services/api';
 import styles from './LoginPage.module.scss';
 
 function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
+    // Client-side validation
     const newErrors = {};
     if (!form.email) newErrors.email = 'Email is required';
     if (!form.password) newErrors.password = 'Password is required';
-
     setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) return;
 
-    if (Object.keys(newErrors).length === 0) {
-      // eslint-disable-next-line no-console
-      console.log('Submitting:', form);
+    // Call the backend
+    setLoading(true);
+    setServerError('');
+    try {
+      const response = await api.post('/auth/login', {
+        email: form.email,
+        password: form.password,
+      });
+      // Store the JWT token so all future API calls are authenticated
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userRole', response.data.user.role);
+      const userRole = response.data.user.role; // Get the role from the response
+        
+      if (userRole === 'admin') {
+        navigate('/admin'); // Redirect admins to /admin
+      } else {
+        navigate('/dashboard'); // Redirect regular users to /dashboard
+      }
+    } catch (error) {
+      const message =
+        error.response?.data?.message || 'Login failed. Please try again.';
+      setServerError(message);
+    } finally {
+      setLoading(false);
     }
   }
 
+  const footer = (
+    <>
+      Don&apos;t have an account? <Link to="/register">Create Account</Link>
+    </>
+  );
+
   return (
-    // 2. Use styles.className instead of a string
-    <div className={styles.loginWrapper}>
-      <div className={styles.card}>
-        <h1>GAMS Login</h1>
-        <p>Welcome back, Guild Member.</p>
-        <form onSubmit={handleSubmit}>
-          <Input
-            label="Email"
-            name="email"
-            type="email"
-            value={form.email}
-            onChange={handleChange}
-            placeholder="Enter your email"
-            error={errors.email}
-            required
-          />
-
-          <Input
-            label="Password"
-            name="password"
-            type="password"
-            value={form.password}
-            onChange={handleChange}
-            placeholder="Enter your password"
-            error={errors.password}
-            required
-          />
-
-          <button type="submit" className={styles.loginButton}>
-            Login
-          </button>
-        </form>
-      </div>
-    </div>
+    <AuthCard title="Welcome Back" footerContent={footer}>
+      <form onSubmit={handleSubmit} noValidate>
+        <Input
+          label="Email"
+          name="email"
+          type="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="Email"
+          error={errors.email}
+          required
+        />
+        <Input
+          label="Password"
+          name="password"
+          type="password"
+          value={form.password}
+          onChange={handleChange}
+          placeholder="Password"
+          error={errors.password}
+          required
+        />
+        {serverError && <p className={styles.serverError}>{serverError}</p>}
+        <Button type="submit" disabled={loading} className={styles.loginButton}>
+          {loading ? 'Logging in...' : 'Login'}
+        </Button>
+      </form>
+    </AuthCard>
   );
 }
 

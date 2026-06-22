@@ -1,11 +1,17 @@
-@use '../styles/variables' as *;
-@use '../styles/mixins' as *;
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
 
-.loginButton {
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.submitButton {
   width: 100%;
   margin-top: spacing(lg);
   padding: spacing(sm) spacing(md);
-  background-color: color(text-dark); // dark grey/black matching the wireframe
+  background-color: color(text-dark); // dark grey/black from wireframe
   color: white;
   border: none;
   border-radius: radius(md);
@@ -17,6 +23,10 @@
 
   &:hover {
     background-color: #000000;
+  }
+
+  &:active {
+    transform: translateY(1px);
   }
 }
 .serverError {

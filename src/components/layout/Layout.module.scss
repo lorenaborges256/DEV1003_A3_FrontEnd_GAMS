@@ -38,3 +38,17 @@
     padding-top: 60px;
   }
 }
+.overlay {
+  display: none;
+
+  @include mobile {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 150; // Sits behind Sidebar (200) but above content
+  }
+}

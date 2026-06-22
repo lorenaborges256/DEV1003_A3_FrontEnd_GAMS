@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import ContractCard from '../components/ContractCard';
+import styles from './ContractsPage.module.scss';
+import AcceptModal from '../components/AcceptModal';
 
 function ContractsPage() {
   const [contracts, setContracts] = useState([]);
@@ -10,6 +12,12 @@ function ContractsPage() {
   const [typeFilter, setTypeFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [acceptedContract, setAcceptedContract] = useState(null);
+  const [acceptedIds, setAcceptedIds] = useState(() => {
+    const stored = localStorage.getItem('acceptedContracts');
+    return stored ? JSON.parse(stored) : [];
+  });
 
   useEffect(() => {
     const params = {};
@@ -32,13 +40,45 @@ function ContractsPage() {
     navigate(`/contracts/${id}`);
   };
 
+  const handleWatch = (id) => {
+    api
+      .post('/watchlist', { targetId: id, targetType: 'Contract' })
+      .then(() => {
+        alert('Added to watchlist!');
+      })
+      .catch(() => {
+        alert('Failed to add to watchlist.');
+      });
+  };
+
+  const handleAccept = (id) => {
+    if (acceptedIds.includes(id)) {
+      alert('You have already accepted this contract.');
+      return;
+    }
+    const contract = contracts.find((c) => c._id === id);
+    api
+      .post(`/contracts/${id}/accept`)
+      .then(() => {
+        const updated = [...acceptedIds, id];
+        setAcceptedIds(updated);
+        localStorage.setItem('acceptedContracts', JSON.stringify(updated));
+        setAcceptedContract(contract);
+        setShowModal(true);
+      })
+      .catch(() => {
+        alert('Failed to accept contract.');
+      });
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
   return (
-    <main>
-      <h1>Contracts</h1>
-      <div className="filters">
+    <main className={styles.page}>
+      {showModal && <AcceptModal contract={acceptedContract} onClose={() => setShowModal(false)} />}
+      <h1 className={styles.pageHeader}>Contracts</h1>
+      <div className={styles.filters}>
         <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
           <option value="">All Types</option>
           <option value="Combat">Combat</option>
@@ -51,10 +91,16 @@ function ContractsPage() {
           <option value="upcoming">Upcoming</option>
         </select>
       </div>
-      <p>Contracts ({contracts.length})</p>
-      <div className="card-grid">
+      <p className={styles.count}>Contracts ({contracts.length})</p>
+      <div className={styles.cardGrid}>
         {contracts.map((contract) => (
-          <ContractCard key={contract._id} contract={contract} onViewDetails={handleViewDetails} />
+          <ContractCard
+            key={contract._id}
+            contract={contract}
+            onViewDetails={handleViewDetails}
+            onAccept={handleAccept}
+            onWatch={handleWatch}
+          />
         ))}
       </div>
     </main>

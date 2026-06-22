@@ -1,0 +1,112 @@
+@use '../styles/variables' as *;
+
+.page {
+  padding: spacing(xl);
+}
+
+.backButton {
+  margin-bottom: spacing(lg);
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: spacing(sm);
+}
+
+.meta {
+  color: color(text-dark);
+  opacity: 0.7;
+  margin-bottom: spacing(sm);
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px spacing(sm);
+  border-radius: radius(sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  width: fit-content;
+  margin-bottom: spacing(md);
+}
+
+.badgeAvailable {
+  background: color(success);
+  color: white;
+}
+
+.badgeUpcoming {
+  background: color(warning);
+  color: white;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(sm);
+  margin-bottom: spacing(lg);
+}
+
+.description {
+  margin-top: spacing(md);
+  margin-bottom: spacing(lg);
+  line-height: 1.6;
+}
+
+.card {
+  background: color(card-bg);
+  border: 1px solid color(border);
+  border-radius: radius(lg);
+  padding: spacing(xl);
+  margin-top: spacing(lg);
+  display: flex;
+  gap: spacing(xl);
+  align-items: flex-start;
+  max-width: 900px;
+}
+
+.cardImage {
+  width: 350px;
+  height: 350px;
+  background: color(border);
+  border-radius: radius(md);
+  flex-shrink: 0;
+  object-fit: cover;
+  align-self: center;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(sm);
+  flex: 1;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing(xs);
+  color: color(text-dark);
+  font-size: 0.875rem;
+  margin-bottom: spacing(md);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.actions {
+  margin-top: spacing(md);
+  display: flex;
+}
+
+.pageTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: spacing(lg);
+}
+
+.descriptionTitle {
+  font-weight: 700;
+  margin-bottom: spacing(xs);
+}
