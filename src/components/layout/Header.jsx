@@ -14,6 +14,16 @@ function Header({ onToggleMenu }) {
   const profileRef = useRef(null);
   const navigate = useNavigate();
 
+  // Get user name from localStorage
+  const userName = localStorage.getItem('userName') || 'User';
+
+  // Consolidated Logout Function
+  const handleLogout = () => {
+    localStorage.clear(); // Clears token, role, and name for a clean exit
+    setIsProfileOpen(false);
+    navigate('/login'); // Redirect to login page
+  };
+
   // Fetch notifications
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -37,12 +47,6 @@ function Header({ onToggleMenu }) {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem('token'); // Clear the session
-    setIsProfileOpen(false);
-    navigate('/login'); // Redirect to login page
-  };
 
   return (
     <header className={styles.header}>
@@ -97,6 +101,11 @@ function Header({ onToggleMenu }) {
 
           {isProfileOpen && (
             <div className={`${styles.dropdown} ${styles.profileDropdown}`}>
+              {/* Display user name - non-clickable header */}
+              <div className={styles.dropdownHeader}>
+                <h4 className={styles.userNameDisplay}>{userName}</h4>
+              </div>
+              
               <div className={styles.dropdownList}>
                 <button className={styles.logoutButton} onClick={handleLogout}>
                   Logout

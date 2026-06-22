@@ -1,126 +1,103 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import ItemCard from '../components/ItemCard';
 import ContractCard from '../components/ContractCard';
-
-const reservedItems = [
-  {
-    _id: '1',
-    name: 'Item Name',
-    category: 'Category',
-    price: 50,
-    stockQuantity: 1,
-    imageUrl: '',
-  },
-  {
-    _id: '2',
-    name: 'Item Name',
-    category: 'Category',
-    price: 80,
-    stockQuantity: 1,
-    imageUrl: '',
-  },
-  {
-    _id: '3',
-    name: 'Item Name',
-    category: 'Category',
-    price: 100,
-    stockQuantity: 1,
-    imageUrl: '',
-  },
-];
-
-const acceptedContracts = [
-  {
-    _id: '1',
-    title: 'Contract Title',
-    difficulty: 'Difficulty',
-    type: 'Type',
-    isAvailable: true,
-    endAt: '20 Mar',
-    rewardAmount: 200,
-    imageUrl: '',
-  },
-  {
-    _id: '2',
-    title: 'Contract Title',
-    difficulty: 'Difficulty',
-    type: 'Type',
-    isAvailable: true,
-    endAt: '25 Mar',
-    rewardAmount: 500,
-    imageUrl: '',
-  },
-];
+import api from '../services/api'; // Import your API service
+import styles from '../pages/UserDashboard.module.scss';
 
 function UserDashboard() {
-  const [activeSection, setActiveSection] = useState('items');
-  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('reserved');
+  const [reservedItems, setReservedItems] = useState([]);
+  const [acceptedContracts, setAcceptedContracts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // 2. Fetch data from the backend on mount
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        setLoading(true);
+        // We use Promise.all to fetch both at the same time efficiently
+        const [itemsRes, contractsRes] = await Promise.all([
+          api.get('/reservations'),
+          api.get('/acceptances')
+        ]);
+        
+        setReservedItems(itemsRes.data);
+        setAcceptedContracts(contractsRes.data);
+      } catch (err) {
+        console.error('Error fetching dashboard data:', err);
+        setError('Could not load your dashboard data. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  if (loading) return <div className={styles.loading}>Loading your dashboard...</div>;
+  if (error) return <div className={styles.error}>{error}</div>;
 
   return (
-    <section>
-      <h1>Dashboard</h1>
-
-      <div className="dashboard-controls">
-        <div className="dashboard-tabs">
-          <button
-            type="button"
-            className={activeSection === 'items' ? 'dashboard-tab active' : 'dashboard-tab'}
-            onClick={() => setActiveSection('items')}
-          >
-            Reserved Items
-          </button>
-
-          <button
-            type="button"
-            className={activeSection === 'contracts' ? 'dashboard-tab active' : 'dashboard-tab'}
-            onClick={() => setActiveSection('contracts')}
-          >
-            Accepted Contracts
-          </button>
+    <div className={styles.dashboard}>
+      <header className={styles.header}>
+        <div className={styles.titleGroup}>
+          <h1>Dashboard</h1>
+          <p className={styles.subtitle}>Manage your guild activities</p>
         </div>
+      </header>
 
-        <input className="dashboard-search" type="search" placeholder="Search items..." />
+      <div className={styles.tabs}>
+        <button 
+          className={`${styles.tab} ${activeTab === 'reserved' ? styles.active : ''}`}
+          onClick={() => setActiveTab('reserved')}
+        >
+          Reserved Items
+        </button>
+        <button 
+          className={`${styles.tab} ${activeTab === 'accepted' ? styles.active : ''}`}
+          onClick={() => setActiveTab('accepted')}
+        >
+          Accepted Contracts
+        </button>
       </div>
 
-      {activeSection === 'items' && (
-        <>
-          <h2>Reserved Items ({reservedItems.length})</h2>
-
-          <div className="card-grid">
-            {reservedItems.map((item) => (
-              <ItemCard
-                key={item._id}
-                item={item}
-                onViewDetails={(id) => navigate(`/items/${id}`)}
-                onReserve={() => {}}
-                onWatch={() => {}}
-                onUnwatch={() => {}}
-              />
-            ))}
+      <div className={styles.content}>
+        {activeTab === 'reserved' ? (
+          <div className={styles.section}>
+            <h2>Reserved Items ({reservedItems.length})</h2>
+            {reservedItems.length === 0 ? (
+              <p className={styles.empty}>You haven&apos;t reserved any items yet.</p>
+            ) : (
+              <div className={styles.grid}>
+                {reservedItems.map((reservation) => (
+                  <ItemCard 
+                    key={reservation._id} 
+                    item={reservation.item} // Backend usually populates the item object
+                  />
+                ))}
+              </div>
+            )}
           </div>
-        </>
-      )}
-
-      {activeSection === 'contracts' && (
-        <>
-          <h2>Accepted Contracts ({acceptedContracts.length})</h2>
-
-          <div className="card-grid">
-            {acceptedContracts.map((contract) => (
-              <ContractCard
-                key={contract._id}
-                contract={contract}
-                onViewDetails={(id) => navigate(`/contracts/${id}`)}
-                onAccept={() => {}}
-                onWatch={() => {}}
-                onUnwatch={() => {}}
-              />
-            ))}
+        ) : (
+          <div className={styles.section}>
+            <h2>Accepted Contracts ({acceptedContracts.length})</h2>
+            {acceptedContracts.length === 0 ? (
+              <p className={styles.empty}>You haven&apos;t accepted any contracts yet.</p>
+            ) : (
+              <div className={styles.grid}>
+                {acceptedContracts.map((acceptance) => (
+                  <ContractCard 
+                    key={acceptance._id} 
+                    contract={acceptance.contract} // Backend usually populates the contract object
+                  />
+                ))}
+              </div>
+            )}
           </div>
-        </>
-      )}
-    </section>
+        )}
+      </div>
+    </div>
   );
 }
 

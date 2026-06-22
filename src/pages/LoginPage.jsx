@@ -35,11 +35,19 @@ function LoginPage() {
         email: form.email,
         password: form.password,
       });
-      // Store the JWT token so all future API calls are authenticated
+
+      // 1. Store the JWT token so all future API calls are authenticated
       localStorage.setItem('token', response.data.token);
+      
+      // 2. Store the user role for Sidebar/Navigation control
       localStorage.setItem('userRole', response.data.user.role);
-      const userRole = response.data.user.role; // Get the role from the response
+      
+      // 3. Store the user name for the Header Profile dropdown
+      localStorage.setItem('userName', response.data.user.name); // <--- ADDED THIS LINE
+
+      const userRole = response.data.user.role; 
         
+      // 4. Redirect based on role
       if (userRole === 'admin') {
         navigate('/admin'); // Redirect admins to /admin
       } else {
