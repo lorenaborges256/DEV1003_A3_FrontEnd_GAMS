@@ -34,6 +34,7 @@ export default defineConfig([
         describe: "readonly",
         beforeEach: "readonly",
         afterEach: "readonly",
+        vi: "readonly",
       },
     },
   },

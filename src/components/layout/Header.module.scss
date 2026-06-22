@@ -112,7 +112,7 @@
   cursor: pointer;
   font-size: 1.4rem;
   z-index: 1010; /* Even higher to ensure it catches the click */
-  
+
   &:hover {
     background-color: rgba(0, 0, 0, 0.05);
     border-radius: 50%;
@@ -146,7 +146,7 @@
   background: white;
   border: 1px solid #ddd;
   border-radius: radius(md);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 1000;
 
   @include mobile {
@@ -164,7 +164,7 @@
   padding: spacing(md);
   border-bottom: 1px solid color(border);
   background: color(background);
-  
+
   h4 {
     margin: 0;
     font-size: 1rem;
@@ -184,11 +184,11 @@
   border-bottom: 1px solid color(border);
   font-size: 0.85rem;
   color: color(text-dark);
-  
+
   &:last-child {
     border-bottom: none;
   }
-  
+
   p {
     margin: 0;
     line-height: 1.4;
@@ -213,13 +213,13 @@
   border-top: 1px solid color(border);
   text-align: center;
   background: color(background);
-  
+
   a {
     color: color(primary);
     text-decoration: none;
     font-size: 0.85rem;
     font-weight: 600;
-    
+
     &:hover {
       text-decoration: underline;
     }
@@ -254,8 +254,8 @@
   color: color(error);
   font-weight: bold;
   cursor: pointer;
-  
+
   &:hover {
-    background: rgba(0,0,0,0.05);
+    background: rgba(0, 0, 0, 0.05);
   }
 }

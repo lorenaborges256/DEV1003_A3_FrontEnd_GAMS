@@ -1,4 +1,3 @@
-/* global vi */
 import { render, screen, fireEvent } from '@testing-library/react';
 import Input from '../components/forms/Input';
 

@@ -57,8 +57,7 @@ function RegisterForm() {
       navigate('/dashboard');
     } catch (error) {
       // The backend will return a message like "Email already registered"
-      const message =
-        error.response?.data?.message || 'Registration failed. Please try again.';
+      const message = error.response?.data?.message || 'Registration failed. Please try again.';
       setServerError(message);
     } finally {
       setLoading(false);
