@@ -23,12 +23,30 @@ function ContractsPage() {
   useEffect(() => {
     const params = {};
     if (typeFilter) params.type = typeFilter;
-    if (statusFilter) params.status = statusFilter;
 
     api
       .get('/contracts', { params })
       .then((response) => {
-        setContracts(response.data);
+        let results = response.data;
+        if (statusFilter === 'available') {
+          results = results.filter((contract) => {
+            const now = new Date();
+            return (
+              now >= new Date(contract.startAt) &&
+              now <= new Date(contract.endAt) &&
+              contract.currentAcceptances < contract.maxAcceptances
+            );
+          });
+        } else if (statusFilter === 'upcoming') {
+          results = results.filter((contract) => {
+            const now = new Date();
+            return (
+              now < new Date(contract.startAt) ||
+              contract.currentAcceptances >= contract.maxAcceptances
+            );
+          });
+        }
+        setContracts(results);
         setLoading(false);
       })
       .catch(() => {
