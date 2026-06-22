@@ -18,6 +18,7 @@ function ContractsPage() {
     const stored = localStorage.getItem('acceptedContracts');
     return stored ? JSON.parse(stored) : [];
   });
+  const [watchedIds, setWatchedIds] = useState([]);
 
   useEffect(() => {
     const params = {};
@@ -41,9 +42,14 @@ function ContractsPage() {
   };
 
   const handleWatch = (id) => {
+    if (watchedIds.includes(id)) {
+      alert('You are already watching this contract.');
+      return;
+    }
     api
       .post('/watchlist', { targetId: id, targetType: 'Contract' })
       .then(() => {
+        setWatchedIds((previous) => [...previous, id]);
         alert('Added to watchlist!');
       })
       .catch(() => {
