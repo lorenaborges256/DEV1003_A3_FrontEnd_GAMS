@@ -18,16 +18,35 @@ function ContractsPage() {
     const stored = localStorage.getItem('acceptedContracts');
     return stored ? JSON.parse(stored) : [];
   });
+  const [watchedIds, setWatchedIds] = useState([]);
 
   useEffect(() => {
     const params = {};
     if (typeFilter) params.type = typeFilter;
-    if (statusFilter) params.status = statusFilter;
 
     api
       .get('/contracts', { params })
       .then((response) => {
-        setContracts(response.data);
+        let results = response.data;
+        if (statusFilter === 'available') {
+          results = results.filter((contract) => {
+            const now = new Date();
+            return (
+              now >= new Date(contract.startAt) &&
+              now <= new Date(contract.endAt) &&
+              contract.currentAcceptances < contract.maxAcceptances
+            );
+          });
+        } else if (statusFilter === 'upcoming') {
+          results = results.filter((contract) => {
+            const now = new Date();
+            return (
+              now < new Date(contract.startAt) ||
+              contract.currentAcceptances >= contract.maxAcceptances
+            );
+          });
+        }
+        setContracts(results);
         setLoading(false);
       })
       .catch(() => {
@@ -41,9 +60,14 @@ function ContractsPage() {
   };
 
   const handleWatch = (id) => {
+    if (watchedIds.includes(id)) {
+      alert('You are already watching this contract.');
+      return;
+    }
     api
       .post('/watchlist', { targetId: id, targetType: 'Contract' })
       .then(() => {
+        setWatchedIds((previous) => [...previous, id]);
         alert('Added to watchlist!');
       })
       .catch(() => {
