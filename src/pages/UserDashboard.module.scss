@@ -1,4 +1,4 @@
-@use "sass:map";
+@use 'sass:map';
 
 // Assuming you have a variables file, if not, I'll use standard colors
 $primary-color: #4a148c; // Purple theme based on your screenshot
@@ -15,14 +15,14 @@ $bg-light: #f9f9f9;
 
   .header {
     margin-bottom: 2rem;
-    
+
     .titleGroup {
       h1 {
         font-size: 2rem;
         color: $text-main;
         margin-bottom: 0.5rem;
       }
-      
+
       .subtitle {
         color: $text-light;
         font-size: 1rem;
@@ -82,7 +82,8 @@ $bg-light: #f9f9f9;
     }
   }
 
-  .loading, .error {
+  .loading,
+  .error {
     text-align: center;
     padding: 5rem;
     font-size: 1.2rem;
@@ -97,7 +98,7 @@ $bg-light: #f9f9f9;
 @media (max-width: 768px) {
   .dashboard {
     padding: 1rem;
-    
+
     .tabs {
       overflow-x: auto;
       white-space: nowrap;

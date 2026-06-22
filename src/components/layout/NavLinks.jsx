@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import styles from './NavLinks.module.scss';
 
 function NavLinks({ onClick }) {
-// Get the role from localStorage
+  // Get the role from localStorage
   const role = localStorage.getItem('userRole');
 
   // Define links for regular users
@@ -22,7 +22,7 @@ function NavLinks({ onClick }) {
   ];
 
   // Choose which set of links to show
-  const links = role === 'admin' ? [...userLinks, ...adminLinks] : userLinks;
+  const links = role === 'admin' ? adminLinks : userLinks;
 
   return (
     <ul className={styles.navLinks}>

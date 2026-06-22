@@ -19,9 +19,9 @@ function UserDashboard() {
         // We use Promise.all to fetch both at the same time efficiently
         const [itemsRes, contractsRes] = await Promise.all([
           api.get('/reservations'),
-          api.get('/acceptances')
+          api.get('/acceptances'),
         ]);
-        
+
         setReservedItems(itemsRes.data);
         setAcceptedContracts(contractsRes.data);
       } catch (err) {
@@ -48,13 +48,13 @@ function UserDashboard() {
       </header>
 
       <div className={styles.tabs}>
-        <button 
+        <button
           className={`${styles.tab} ${activeTab === 'reserved' ? styles.active : ''}`}
           onClick={() => setActiveTab('reserved')}
         >
           Reserved Items
         </button>
-        <button 
+        <button
           className={`${styles.tab} ${activeTab === 'accepted' ? styles.active : ''}`}
           onClick={() => setActiveTab('accepted')}
         >
@@ -71,8 +71,8 @@ function UserDashboard() {
             ) : (
               <div className={styles.grid}>
                 {reservedItems.map((reservation) => (
-                  <ItemCard 
-                    key={reservation._id} 
+                  <ItemCard
+                    key={reservation._id}
                     item={reservation.item} // Backend usually populates the item object
                   />
                 ))}
@@ -87,8 +87,8 @@ function UserDashboard() {
             ) : (
               <div className={styles.grid}>
                 {acceptedContracts.map((acceptance) => (
-                  <ContractCard 
-                    key={acceptance._id} 
+                  <ContractCard
+                    key={acceptance._id}
                     contract={acceptance.contract} // Backend usually populates the contract object
                   />
                 ))}
