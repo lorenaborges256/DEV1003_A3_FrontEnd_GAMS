@@ -22,7 +22,7 @@ function NavLinks({ onClick }) {
   ];
 
   // Choose which set of links to show
-  const links = role === 'admin' ? adminLinks : userLinks;
+  const links = role === 'admin' ? [...userLinks, ...adminLinks] : userLinks;
 
   return (
     <ul className={styles.navLinks}>
