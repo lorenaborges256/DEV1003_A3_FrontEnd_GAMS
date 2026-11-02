@@ -1,69 +1,51 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../services/api';
 import ItemCard from '../components/ItemCard';
-
-const items = [
-  {
-    _id: '1',
-    name: 'Item Name',
-    category: 'Category',
-    price: 50,
-    stockQuantity: 1,
-    imageUrl: '',
-  },
-  {
-    _id: '2',
-    name: 'Item Name',
-    category: 'Category',
-    price: 80,
-    stockQuantity: 0,
-    imageUrl: '',
-  },
-  {
-    _id: '3',
-    name: 'Item Name',
-    category: 'Category',
-    price: 100,
-    stockQuantity: 1,
-    imageUrl: '',
-  },
-];
+import styles from './ItemsPage.module.scss';
 
 function ItemsPage() {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    api
+      .get('/items')
+      .then((response) => {
+        setItems(response.data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError('Failed to load items.');
+        setLoading(false);
+      });
+  }, []);
+
+  const handleViewDetails = (id) => {
+    navigate(`/items/${id}`);
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
   return (
-    <section>
-      <h1>Items</h1>
-
-      <div className="dashboard-controls">
-        <div className="dashboard-tabs">
-          <button type="button" className="dashboard-tab active">
-            All Categories
-          </button>
-
-          <button type="button" className="dashboard-tab">
-            All Status
-          </button>
-        </div>
-
-        <input className="dashboard-search" type="search" placeholder="Search items..." />
-      </div>
-
-      <h2>Items ({items.length})</h2>
-
-      <div className="card-grid">
+    <main className={styles.page}>
+      <h1 className={styles.pageHeader}>Items</h1>
+      <p className={styles.count}>Items ({items.length})</p>
+      <div className={styles.cardGrid}>
         {items.map((item) => (
           <ItemCard
             key={item._id}
             item={item}
-            onViewDetails={(id) => navigate(`/items/${id}`)}
+            onViewDetails={handleViewDetails}
             onReserve={() => {}}
             onWatch={() => {}}
-            onUnwatch={() => {}}
           />
         ))}
       </div>
-    </section>
+    </main>
   );
 }
 
