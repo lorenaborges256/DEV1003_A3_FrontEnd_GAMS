@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation  } from 'react-router-dom';
 import api from '../services/api';
 import styles from './ItemDetailsPage.module.scss';
 import Button from '../components/forms/Button';
@@ -7,6 +7,8 @@ import Button from '../components/forms/Button';
 function ItemDetailsPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const isReadOnly = location.state?.readOnly === true;
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -60,14 +62,18 @@ function ItemDetailsPage() {
           <h3 className={styles.descriptionTitle}>Description</h3>
           <p className={styles.description}>{item.description}</p>
           <div className={styles.actions}>
-            {isAvailable ? (
-              <Button type="button" onClick={handleReserve}>
-                Reserve
-              </Button>
-            ) : (
-              <Button type="button" onClick={() => alert('Watch coming soon!')}>
-                Watch
-              </Button>
+            {!isReadOnly && (
+              <div className={styles.actions}>
+                {isAvailable ? (
+                  <Button type="button" onClick={handleReserve}>
+                    Reserve
+                  </Button>
+                ) : (
+                  <Button type="button" onClick={() => alert('Watch coming soon!')}>
+                    Watch
+                  </Button>
+                )}
+              </div>
             )}
           </div>
         </div>

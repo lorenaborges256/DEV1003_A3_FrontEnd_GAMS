@@ -1,15 +1,29 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ItemCard from '../components/ItemCard';
 import ContractCard from '../components/ContractCard';
 import api from '../services/api'; // Import your API service
 import styles from '../pages/UserDashboard.module.scss';
 
 function UserDashboard() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('reserved');
   const [reservedItems, setReservedItems] = useState([]);
   const [acceptedContracts, setAcceptedContracts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const handleItemDetails = (itemId) => {
+    navigate(`/items/${itemId}`, {
+      state: { readOnly: true },
+    });
+  };
+
+  const handleContractDetails = (contractId) => {
+    navigate(`/contracts/${contractId}`, {
+      state: { readOnly: true },
+    });
+  };
+
 
   // 2. Fetch data from the backend on mount
   useEffect(() => {
@@ -73,7 +87,9 @@ function UserDashboard() {
                 {reservedItems.map((reservation) => (
                   <ItemCard
                     key={reservation._id}
-                    item={reservation.item} // Backend usually populates the item object
+                    item={reservation.item}
+                    onViewDetails={handleItemDetails}
+                    showSecondaryAction={false}
                   />
                 ))}
               </div>
@@ -88,8 +104,10 @@ function UserDashboard() {
               <div className={styles.grid}>
                 {acceptedContracts.map((acceptance) => (
                   <ContractCard
-                    key={acceptance._id}
-                    contract={acceptance.contract} // Backend usually populates the contract object
+                      key={acceptance._id}
+                      contract={acceptance.contract}
+                      onViewDetails={handleContractDetails}
+                      showSecondaryAction={false}
                   />
                 ))}
               </div>
