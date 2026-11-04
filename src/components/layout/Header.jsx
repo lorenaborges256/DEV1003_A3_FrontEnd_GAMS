@@ -24,19 +24,40 @@ function Header({ onToggleMenu }) {
     navigate('/login'); // Redirect to login page
   };
 
-  // Fetch notifications
+  // Fetch notifications and refresh the badge after a notification is updated
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
         const response = await api.get('/notifications');
-        setNotifications(response.data);
-        setUnreadCount(response.data.filter((n) => n.status === 'unread').length);
+        const nextNotifications = response.data || [];
+
+        setNotifications(nextNotifications);
+        setUnreadCount(
+          nextNotifications.filter(
+            (notification) => notification.status === 'unread',
+          ).length,
+        );
       } catch (error) {
         console.error('Failed to fetch notifications', error);
       }
     };
+
     fetchNotifications();
+
+    const handleNotificationsUpdated = () => {
+      fetchNotifications();
+    };
+
+    window.addEventListener('notifications-updated', handleNotificationsUpdated);
+
+    return () => {
+      window.removeEventListener(
+        'notifications-updated',
+        handleNotificationsUpdated,
+      );
+    };
   }, []);
+
 
   // Close menus when clicking outside
   useEffect(() => {

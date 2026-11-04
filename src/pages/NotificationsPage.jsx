@@ -25,9 +25,12 @@ function NotificationsPage() {
     api.put(`/notifications/${id}/read`).then(() => {
       setNotifications((previous) =>
         previous.map((notification) =>
-          notification._id === id ? { ...notification, status: 'read' } : notification
-        )
+          notification._id === id
+            ? { ...notification, status: 'read' }
+            : notification,
+        ),
       );
+      window.dispatchEvent(new Event('notifications-updated'));
     });
   };
 
