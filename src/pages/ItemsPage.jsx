@@ -9,6 +9,9 @@ function ItemsPage() {
   const [watchedIds, setWatchedIds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [search, setSearch] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,12 +64,53 @@ function ItemsPage() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
+  const categories = [...new Set(items.map((item) => item.category))].sort();
+
+  const visibleItems = items.filter((item) => {
+    if (categoryFilter && item.category !== categoryFilter) return false;
+    if (statusFilter === 'available' && item.stockQuantity <= 0) return false;
+    if (statusFilter === 'unavailable' && item.stockQuantity > 0) return false;
+    if (search && !item.name.toLowerCase().includes(search.trim().toLowerCase())) return false;
+    return true;
+  });
+
   return (
     <main className={styles.page}>
       <h1 className={styles.pageHeader}>Items</h1>
-      <p className={styles.count}>Items ({items.length})</p>
+      <div className={styles.filters}>
+        <select
+          aria-label="Filter by category"
+          value={categoryFilter}
+          onChange={(e) => setCategoryFilter(e.target.value)}
+        >
+          <option value="">All Categories</option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+        <select
+          aria-label="Filter by availability"
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+        >
+          <option value="">All Availability</option>
+          <option value="available">Available</option>
+          <option value="unavailable">Currently Unavailable</option>
+        </select>
+        <input
+          className={styles.search}
+          type="search"
+          aria-label="Search items"
+          placeholder="Search items..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+      <p className={styles.count}>Items ({visibleItems.length})</p>
       <div className={styles.cardGrid}>
-        {items.map((item) => (
+        {visibleItems.map((item) => (
           <ItemCard
             key={item._id}
             item={item}
