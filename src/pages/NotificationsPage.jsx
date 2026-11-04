@@ -35,9 +35,18 @@ function NotificationsPage() {
   };
 
   const handleDelete = (id) => {
-    api.delete(`/notifications/${id}`).then(() => {
-      setNotifications((previous) => previous.filter((notification) => notification._id !== id));
-    });
+    api
+      .delete(`/notifications/${id}`)
+      .then(() => {
+        setNotifications((previous) =>
+          previous.filter((notification) => notification._id !== id),
+        );
+
+        window.dispatchEvent(new Event('notifications-updated'));
+      })
+      .catch((error) => {
+        console.error('Failed to delete notification', error);
+      });
   };
 
   if (loading) return <p>Loading...</p>;
