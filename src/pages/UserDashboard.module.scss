@@ -1,4 +1,4 @@
-@use 'sass:map';
+@use '../styles/variables' as *;
 
 // Assuming you have a variables file, if not, I'll use standard colors
 $primary-color: #4a148c; // Purple theme based on your screenshot
@@ -76,8 +76,9 @@ $bg-light: #f9f9f9;
 
       .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 1.5rem;
+        align-items: stretch;
       }
     }
   }
@@ -95,6 +96,8 @@ $bg-light: #f9f9f9;
 }
 
 // Responsive adjustments
+
+// Mobile: 768px and below
 @media (max-width: 768px) {
   .dashboard {
     padding: 1rem;
@@ -103,5 +106,46 @@ $bg-light: #f9f9f9;
       overflow-x: auto;
       white-space: nowrap;
     }
+
+    .content {
+      .section {
+        .grid {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+      }
+    }
   }
 }
+
+// Tablet: 769px to 1024px
+@media (min-width: 769px) and (max-width: 1024px) {
+  .dashboard {
+    padding: 1.5rem;
+
+    .content {
+      .section {
+        .grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 1.25rem;
+        }
+      }
+    }
+  }
+}
+
+// Desktop: 1025px and above
+@media (min-width: 1025px) {
+  .dashboard {
+    padding: 2rem;
+
+    .content {
+      .section {
+        .grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+    }
+  }
+}
+

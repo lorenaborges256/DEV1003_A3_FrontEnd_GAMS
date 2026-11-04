@@ -1,6 +1,6 @@
 import styles from './ItemCard.module.scss';
 
-function ItemCard({ item, onViewDetails, onReserve, onWatch, onUnwatch, isWatched }) {
+function ItemCard({ item, onViewDetails, onReserve, onWatch, onUnwatch, isWatched, showSecondaryAction = true, }) {
   const isAvailable = item.stockQuantity > 0;
 
   return (
@@ -27,17 +27,18 @@ function ItemCard({ item, onViewDetails, onReserve, onWatch, onUnwatch, isWatche
             <button type="button" onClick={() => onViewDetails(item._id)}>
               View Details
             </button>
-            {isAvailable ? (
-              <button type="button" onClick={() => onReserve(item._id)}>
-                Reserve
-              </button>
-            ) : (
-              !isWatched && (
-                <button type="button" onClick={() => onWatch(item._id)}>
-                  Watch
+            {showSecondaryAction &&
+              (isAvailable ? (
+                <button type="button" onClick={() => onReserve(item._id)}>
+                  Reserve
                 </button>
-              )
-            )}
+              ) : (
+                !isWatched && (
+                  <button type="button" onClick={() => onWatch(item._id)}>
+                    Watch
+                  </button>
+                )
+              ))}
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import styles from './ContractCard.module.scss';
 import Button from './forms/Button';
 
-function ContractCard({ contract, onViewDetails, onAccept, onWatch, onUnwatch, isWatched }) {
+function ContractCard({ contract, onViewDetails, onAccept, onWatch, onUnwatch, isWatched, showSecondaryAction = true, }) {
   const isAvailable =
     contract.isAvailable ??
     (new Date() >= new Date(contract.startAt) &&
@@ -43,17 +43,18 @@ function ContractCard({ contract, onViewDetails, onAccept, onWatch, onUnwatch, i
             <Button type="button" onClick={() => onViewDetails(contract._id)}>
               View Details
             </Button>
-            {isAvailable ? (
-              <Button type="button" onClick={() => onAccept(contract._id)}>
-                Accept
-              </Button>
-            ) : (
-              !isWatched && (
-                <Button type="button" onClick={() => onWatch(contract._id)}>
-                  Watch
+            {showSecondaryAction &&
+              (isAvailable ? (
+                <Button type="button" onClick={() => onAccept(contract._id)}>
+                  Accept
                 </Button>
-              )
-            )}
+              ) : (
+                !isWatched && (
+                  <Button type="button" onClick={() => onWatch(contract._id)}>
+                    Watch
+                  </Button>
+                )
+              ))}
           </div>
         </div>
       </div>
