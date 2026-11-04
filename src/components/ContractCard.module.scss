@@ -1,59 +1,90 @@
 @use '../styles/variables' as *;
 
 .card {
-  background: color(card-bg);
+  display: flex;
+  min-width: 0;
+  padding: spacing(md);
+  overflow: hidden;
   border: 1px solid color(border);
   border-radius: radius(lg);
-  padding: spacing(lg);
-  display: flex;
-  flex-direction: column;
-  gap: spacing(md);
+  background: color(card-bg);
 }
 
 .cardTop {
   display: flex;
-  gap: spacing(md);
+  flex: 1 1 auto;
   align-items: center;
+  min-width: 0;
+  gap: spacing(md);
 }
 
 .cardImage {
-  width: 120px;
-  height: 120px;
-  background: color(border);
+  width: 88px;
+  height: 88px;
+  flex: 0 0 88px;
   border-radius: radius(md);
-  flex-shrink: 0;
+  background: color(border);
   object-fit: cover;
 }
 
 .cardBody {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
+  min-width: 0;
   gap: spacing(xs);
 }
 
+.cardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  min-width: 0;
+  gap: spacing(sm);
+}
+
 .cardTitle {
-  font-weight: 700;
-  font-size: 1rem;
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
   color: color(text-dark);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.cardCategory,
+.cardPrice,
+.cardDate,
+.cardReward {
+  margin: 0;
+  color: color(text-dark);
+  font-size: 0.8rem;
+  line-height: 1.35;
 }
 
 .cardCategory {
-  font-size: 0.875rem;
-  color: color(text-dark);
   opacity: 0.7;
 }
 
 .badge {
   display: inline-block;
+  width: fit-content;
+  max-width: 100%;
   padding: 2px spacing(sm);
   border-radius: radius(sm);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 600;
-  width: fit-content;
+  line-height: 1.25;
 }
 
 .badgeAvailable {
   background: color(success);
+  color: white;
+}
+
+.badgeUnavailable {
+  background: color(error);
   color: white;
 }
 
@@ -64,13 +95,37 @@
 
 .cardActions {
   display: flex;
-  gap: spacing(sm);
-  margin-top: spacing(sm);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: spacing(xs);
+  max-width: 100%;
+  margin-top: spacing(xs);
 }
 
-.cardHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: spacing(md);
+// Keep both card types compact and consistent on narrower tablet screens.
+@media (min-width: 769px) and (max-width: 900px) {
+  .card {
+    padding: spacing(sm);
+  }
+
+  .cardTop {
+    gap: spacing(sm);
+  }
+
+  .cardImage {
+    width: 76px;
+    height: 76px;
+    flex-basis: 76px;
+  }
+
+  .cardTitle {
+    font-size: 0.875rem;
+  }
+
+  .cardCategory,
+  .cardPrice,
+  .cardDate,
+  .cardReward {
+    font-size: 0.75rem;
+  }
 }

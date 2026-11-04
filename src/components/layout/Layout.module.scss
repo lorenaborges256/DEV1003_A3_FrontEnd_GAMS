@@ -8,6 +8,7 @@
 
 .mainContent {
   flex-grow: 1;
+  min-width: 0;
   margin-left: 240px; // Space for the sidebar
   display: flex;
   flex-direction: column;
@@ -18,10 +19,13 @@
 }
 
 .pageBody {
-  margin-top: 60px; // Space for the header
+  min-width: 0;
+  max-width: 100%;
+  margin-top: 60px;
   padding: spacing(lg);
   background-color: color(background);
   min-height: calc(100vh - 60px);
+  overflow-x: hidden;
 }
 
 .main {

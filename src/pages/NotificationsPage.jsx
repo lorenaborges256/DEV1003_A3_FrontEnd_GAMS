@@ -25,16 +25,28 @@ function NotificationsPage() {
     api.put(`/notifications/${id}/read`).then(() => {
       setNotifications((previous) =>
         previous.map((notification) =>
-          notification._id === id ? { ...notification, status: 'read' } : notification
-        )
+          notification._id === id
+            ? { ...notification, status: 'read' }
+            : notification,
+        ),
       );
+      window.dispatchEvent(new Event('notifications-updated'));
     });
   };
 
   const handleDelete = (id) => {
-    api.delete(`/notifications/${id}`).then(() => {
-      setNotifications((previous) => previous.filter((notification) => notification._id !== id));
-    });
+    api
+      .delete(`/notifications/${id}`)
+      .then(() => {
+        setNotifications((previous) =>
+          previous.filter((notification) => notification._id !== id),
+        );
+
+        window.dispatchEvent(new Event('notifications-updated'));
+      })
+      .catch((error) => {
+        console.error('Failed to delete notification', error);
+      });
   };
 
   if (loading) return <p>Loading...</p>;
