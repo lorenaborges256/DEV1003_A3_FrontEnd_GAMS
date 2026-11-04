@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation  } from 'react-router-dom';
 import api from '../services/api';
 import styles from './ContractDetailsPage.module.scss';
 import Button from '../components/forms/Button';
@@ -8,6 +8,8 @@ import AcceptModal from '../components/AcceptModal';
 function ContractDetailsPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const isReadOnly = location.state?.readOnly === true;
   const [contract, setContract] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -79,14 +81,18 @@ function ContractDetailsPage() {
           <h3 className={styles.descriptionTitle}>Description</h3>
           <p className={styles.description}>{contract.description}</p>
           <div className={styles.actions}>
-            {contract.isAvailable ? (
-              <Button type="button" onClick={handleAccept}>
-                Accept
-              </Button>
-            ) : (
-              <Button type="button" onClick={() => alert('Watch coming soon!')}>
-                Watch
-              </Button>
+            {!isReadOnly && (
+              <div className={styles.actions}>
+                {contract.isAvailable ? (
+                  <Button type="button" onClick={handleAccept}>
+                    Accept
+                  </Button>
+                ) : (
+                  <Button type="button" onClick={() => alert('Watch coming soon!')}>
+                    Watch
+                  </Button>
+                )}
+              </div>
             )}
           </div>
         </div>

@@ -13,10 +13,15 @@ function UserDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const handleItemDetails = (itemId) => {
-    navigate(`/items/${itemId}`);
+    navigate(`/items/${itemId}`, {
+      state: { readOnly: true },
+    });
   };
+
   const handleContractDetails = (contractId) => {
-    navigate(`/contracts/${contractId}`);
+    navigate(`/contracts/${contractId}`, {
+      state: { readOnly: true },
+    });
   };
 
 
