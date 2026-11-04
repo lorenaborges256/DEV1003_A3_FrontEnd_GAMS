@@ -6,15 +6,20 @@ import styles from './ItemsPage.module.scss';
 
 function ItemsPage() {
   const [items, setItems] = useState([]);
+  const [watchedIds, setWatchedIds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    api
-      .get('/items')
-      .then((response) => {
-        setItems(response.data);
+    Promise.all([api.get('/items'), api.get('/watchlist')])
+      .then(([itemsResponse, watchlistResponse]) => {
+        setItems(itemsResponse.data);
+        setWatchedIds(
+          watchlistResponse.data
+            .filter((entry) => entry.targetType === 'Item')
+            .map((entry) => entry.targetId)
+        );
         setLoading(false);
       })
       .catch(() => {
@@ -41,6 +46,18 @@ function ItemsPage() {
       });
   };
 
+  const handleWatch = (id) => {
+    api
+      .post('/watchlist', { targetId: id, targetType: 'Item' })
+      .then(() => {
+        setWatchedIds((previous) => [...previous, id]);
+        alert('Added to watchlist!');
+      })
+      .catch((err) => {
+        alert(err.response?.data?.error || 'Failed to add to watchlist.');
+      });
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
@@ -53,9 +70,10 @@ function ItemsPage() {
           <ItemCard
             key={item._id}
             item={item}
+            isWatched={watchedIds.includes(item._id)}
             onViewDetails={handleViewDetails}
             onReserve={handleReserve}
-            onWatch={() => {}}
+            onWatch={handleWatch}
           />
         ))}
       </div>
