@@ -1,7 +1,15 @@
 import styles from './ContractCard.module.scss';
 import Button from './forms/Button';
 
-function ContractCard({ contract, onViewDetails, onAccept, onWatch, onUnwatch, isWatched, showSecondaryAction = true, }) {
+function ContractCard({
+  contract,
+  onViewDetails,
+  onAccept,
+  onWatch,
+  onUnwatch,
+  isWatched,
+  showSecondaryAction = true,
+}) {
   const isAvailable =
     contract.isAvailable ??
     (new Date() >= new Date(contract.startAt) &&
@@ -9,40 +17,52 @@ function ContractCard({ contract, onViewDetails, onAccept, onWatch, onUnwatch, i
       contract.currentAcceptances < contract.maxAcceptances);
 
   return (
-    <div className={styles.card}>
+    <article className={styles.card}>
       <div className={styles.cardTop}>
         <img
+          className={styles.cardImage}
           src={contract.imageUrl || '/icons.svg'}
           alt={contract.title}
-          className={styles.cardImage}
         />
+
         <div className={styles.cardBody}>
           <div className={styles.cardHeader}>
             <h3 className={styles.cardTitle}>{contract.title}</h3>
-            {isWatched && (
+
+            {showSecondaryAction && isWatched && (
               <Button type="button" onClick={() => onUnwatch(contract._id)}>
                 Unwatch
               </Button>
             )}
           </div>
+
           <p className={styles.cardCategory}>
             {contract.difficulty} / {contract.type}
           </p>
+
           <span
-            className={`${styles.badge} ${isAvailable ? styles.badgeAvailable : styles.badgeUpcoming}`}
+            className={`${styles.badge} ${
+              isAvailable ? styles.badgeAvailable : styles.badgeUpcoming
+            }`}
           >
             {isAvailable ? 'Available' : 'Upcoming'}
           </span>
+
           <p className={styles.cardDate}>
             {isAvailable
               ? `Closes: ${new Date(contract.endAt).toLocaleDateString('en-AU')}`
               : `Opens: ${new Date(contract.startAt).toLocaleDateString('en-AU')}`}
           </p>
-          <p className={styles.cardDate}>Reward: {contract.rewardAmount} Gold</p>
+
+          <p className={styles.cardReward}>
+            Reward: {contract.rewardAmount} Gold
+          </p>
+
           <div className={styles.cardActions}>
             <Button type="button" onClick={() => onViewDetails(contract._id)}>
               View Details
             </Button>
+
             {showSecondaryAction &&
               (isAvailable ? (
                 <Button type="button" onClick={() => onAccept(contract._id)}>
@@ -58,7 +78,7 @@ function ContractCard({ contract, onViewDetails, onAccept, onWatch, onUnwatch, i
           </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 }
 
