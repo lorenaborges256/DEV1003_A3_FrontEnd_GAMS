@@ -27,6 +27,20 @@ function ItemsPage() {
     navigate(`/items/${id}`);
   };
 
+  const handleReserve = (id) => {
+    api
+      .post(`/items/${id}/reserve`)
+      .then((response) => {
+        setItems((previous) =>
+          previous.map((i) => (i._id === id ? { ...i, stockQuantity: i.stockQuantity - 1 } : i))
+        );
+        alert(`Item reserved! Your reservation number is ${response.data.reservationNumber}.`);
+      })
+      .catch((err) => {
+        alert(err.response?.data?.error || 'Failed to reserve item.');
+      });
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
@@ -40,7 +54,7 @@ function ItemsPage() {
             key={item._id}
             item={item}
             onViewDetails={handleViewDetails}
-            onReserve={() => {}}
+            onReserve={handleReserve}
             onWatch={() => {}}
           />
         ))}
