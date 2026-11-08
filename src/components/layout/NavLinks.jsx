@@ -30,6 +30,7 @@ function NavLinks({ onClick }) {
         <li key={link.path} className={styles.navItem}>
           <NavLink
             to={link.path}
+            end={link.path === '/admin'}
             onClick={onClick}
             className={({ isActive }) =>
               isActive ? `${styles.link} ${styles.active}` : styles.link
