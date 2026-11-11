@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import Input from '../../components/forms/Input';
 import Button from '../../components/forms/Button';
+import api from '../../services/api';
 
 function AdminItemPage() {
   const [form, setForm] = useState({
-    itemName: '',
+    name: '',
     category: '',
     price: '',
-    availability: '',
+    stockQuantity: '',
     description: '',
   });
 
@@ -15,12 +16,24 @@ function AdminItemPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  
+async function handleSubmit(e) {
+  e.preventDefault();
 
-    // eslint-disable-next-line no-console
-    console.log('Item saved:', form);
+  try {
+    await api.post('/items', {
+      ...form,
+      price: Number(form.price),
+      stockQuantity: Number(form.stockQuantity),
+    });
+
+    alert('Item saved successfully!');
+  } catch (error) {
+    console.error('Failed to save item:', error);
+    alert('Unable to save item. Please try again.');
   }
+}
+
 
   return (
     <section className="admin-form-page">
@@ -29,8 +42,8 @@ function AdminItemPage() {
       <form className="admin-form" onSubmit={handleSubmit}>
         <Input
           label="Item Name"
-          name="itemName"
-          value={form.itemName}
+          name="name"
+          value={form.name}
           onChange={handleChange}
           placeholder="Enter item name"
           required
@@ -55,14 +68,18 @@ function AdminItemPage() {
           required
         />
 
-        <Input
-          label="Availability"
-          name="availability"
-          value={form.availability}
-          onChange={handleChange}
-          placeholder="Available"
-          required
-        />
+        
+<Input
+  label="Stock Quantity"
+  name="stockQuantity"
+  type="number"
+  min="0"
+  value={form.stockQuantity}
+  onChange={handleChange}
+  placeholder="Enter quantity"
+  required
+/>
+
 
         <Input
           label="Description"
@@ -70,6 +87,7 @@ function AdminItemPage() {
           value={form.description}
           onChange={handleChange}
           placeholder="Enter item description"
+          required
         />
 
         <Button type="submit">Save Item</Button>
