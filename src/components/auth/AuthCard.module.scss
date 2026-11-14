@@ -60,14 +60,6 @@
   }
 }
 
-.logoPlaceholder {
-  width: 120px;
-  height: 120px;
-  background-color: #d0d0d0;
-  border-radius: radius(lg);
-  margin-bottom: spacing(sm);
-}
-
 .appName {
   font-size: 2rem;
   font-weight: 700;
@@ -124,4 +116,13 @@
       text-decoration: underline;
     }
   }
+}
+
+
+// Logo
+.logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 1rem;
 }

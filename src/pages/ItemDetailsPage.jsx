@@ -1,14 +1,19 @@
+
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, useLocation  } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import api from '../services/api';
 import styles from './ItemDetailsPage.module.scss';
 import Button from '../components/forms/Button';
+
+import potionImage from '../assets/images/items/potion.svg';
+import excaliburImage from '../assets/images/items/excalibur.svg';
 
 function ItemDetailsPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const isReadOnly = location.state?.readOnly === true;
+
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -42,25 +47,54 @@ function ItemDetailsPage() {
 
   const isAvailable = item.stockQuantity > 0;
 
+  // Select the correct image for each item.
+  const getItemImage = () => {
+    if (item.imageUrl) return item.imageUrl;
+
+    const imageMap = {
+      Potion: potionImage,
+      'Mana Potion': potionImage,
+      Excalibur: excaliburImage,
+    };
+
+    return imageMap[item.name] || '/icons.svg';
+  };
+
   return (
     <main className={styles.page}>
-      <button type="button" className={styles.backLink} onClick={() => navigate(-1)}>
+      <button
+        type="button"
+        className={styles.backLink}
+        onClick={() => navigate(-1)}
+      >
         ← Back
       </button>
+
       <h2 className={styles.pageTitle}>Item Details</h2>
+
       <div className={styles.card}>
-        <img src={item.imageUrl || ''} alt={item.name} className={styles.cardImage} />
+        <img
+          src={getItemImage()}
+          alt={item.name}
+          className={styles.cardImage}
+        />
+
         <div className={styles.cardContent}>
           <h1 className={styles.title}>{item.name}</h1>
           <p className={styles.category}>{item.category}</p>
           <p className={styles.price}>Price: {item.price} Gold</p>
+
           <span
-            className={`${styles.badge} ${isAvailable ? styles.badgeAvailable : styles.badgeUnavailable}`}
+            className={`${styles.badge} ${
+              isAvailable ? styles.badgeAvailable : styles.badgeUnavailable
+            }`}
           >
             {isAvailable ? 'Available' : 'Currently Unavailable'}
           </span>
+
           <h3 className={styles.descriptionTitle}>Description</h3>
           <p className={styles.description}>{item.description}</p>
+
           <div className={styles.actions}>
             {!isReadOnly && (
               <div className={styles.actions}>
@@ -69,7 +103,10 @@ function ItemDetailsPage() {
                     Reserve
                   </Button>
                 ) : (
-                  <Button type="button" onClick={() => alert('Watch coming soon!')}>
+                  <Button
+                    type="button"
+                    onClick={() => alert('Watch coming soon!')}
+                  >
                     Watch
                   </Button>
                 )}
