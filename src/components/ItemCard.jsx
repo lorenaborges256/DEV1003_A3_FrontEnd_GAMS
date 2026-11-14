@@ -1,5 +1,9 @@
+
 import styles from './ItemCard.module.scss';
 import Button from './forms/Button';
+
+import potionImage from '../assets/images/items/potion.svg';
+import excaliburImage from '../assets/images/items/excalibur.svg';
 
 function ItemCard({
   item,
@@ -12,12 +16,25 @@ function ItemCard({
 }) {
   const isAvailable = item.stockQuantity > 0;
 
+  // Select the correct image for each item.
+  const getItemImage = () => {
+    if (item.imageUrl) return item.imageUrl;
+
+    const imageMap = {
+      Potion: potionImage,
+      'Mana Potion': potionImage,
+      Excalibur: excaliburImage,
+    };
+
+    return imageMap[item.name] || '/icons.svg';
+  };
+
   return (
     <article className={styles.card}>
       <div className={styles.cardTop}>
         <img
           className={styles.cardImage}
-          src={item.imageUrl || '/icons.svg'}
+          src={getItemImage()}
           alt={item.name}
         />
 

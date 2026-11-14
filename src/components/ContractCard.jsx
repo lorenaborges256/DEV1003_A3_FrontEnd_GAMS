@@ -1,5 +1,8 @@
+
 import styles from './ContractCard.module.scss';
 import Button from './forms/Button';
+
+import dragonImage from '../assets/images/contracts/dragon.svg';
 
 function ContractCard({
   contract,
@@ -16,12 +19,19 @@ function ContractCard({
       new Date() <= new Date(contract.endAt) &&
       contract.currentAcceptances < contract.maxAcceptances);
 
+  // Display the dragon image on dragon-related contracts.
+  const isDragonContract = /dragon/i.test(contract.title || '');
+
+  const contractImage = isDragonContract
+    ? dragonImage
+    : contract.imageUrl || '/icons.svg';
+
   return (
     <article className={styles.card}>
       <div className={styles.cardTop}>
         <img
           className={styles.cardImage}
-          src={contract.imageUrl || '/icons.svg'}
+          src={contractImage}
           alt={contract.title}
         />
 

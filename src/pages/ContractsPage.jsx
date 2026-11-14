@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
@@ -14,10 +15,12 @@ function ContractsPage() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [acceptedContract, setAcceptedContract] = useState(null);
+
   const [acceptedIds, setAcceptedIds] = useState(() => {
     const stored = localStorage.getItem('acceptedContracts');
     return stored ? JSON.parse(stored) : [];
   });
+
   const [watchedIds, setWatchedIds] = useState([]);
 
   useEffect(() => {
@@ -28,9 +31,11 @@ function ContractsPage() {
       .get('/contracts', { params })
       .then((response) => {
         let results = response.data;
+
         if (statusFilter === 'available') {
           results = results.filter((contract) => {
             const now = new Date();
+
             return (
               now >= new Date(contract.startAt) &&
               now <= new Date(contract.endAt) &&
@@ -40,12 +45,14 @@ function ContractsPage() {
         } else if (statusFilter === 'upcoming') {
           results = results.filter((contract) => {
             const now = new Date();
+
             return (
               now < new Date(contract.startAt) ||
               contract.currentAcceptances >= contract.maxAcceptances
             );
           });
         }
+
         setContracts(results);
         setLoading(false);
       })
@@ -64,6 +71,7 @@ function ContractsPage() {
       alert('You are already watching this contract.');
       return;
     }
+
     api
       .post('/watchlist', { targetId: id, targetType: 'Contract' })
       .then(() => {
@@ -80,11 +88,14 @@ function ContractsPage() {
       alert('You have already accepted this contract.');
       return;
     }
+
     const contract = contracts.find((c) => c._id === id);
+
     api
       .post(`/contracts/${id}/accept`)
       .then(() => {
         const updated = [...acceptedIds, id];
+
         setAcceptedIds(updated);
         localStorage.setItem('acceptedContracts', JSON.stringify(updated));
         setAcceptedContract(contract);
@@ -100,22 +111,38 @@ function ContractsPage() {
 
   return (
     <main className={styles.page}>
-      {showModal && <AcceptModal contract={acceptedContract} onClose={() => setShowModal(false)} />}
+      {showModal && (
+        <AcceptModal
+          contract={acceptedContract}
+          onClose={() => setShowModal(false)}
+        />
+      )}
+
       <h1 className={styles.pageHeader}>Contracts</h1>
+
       <div className={styles.filters}>
-        <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
+        <select
+          value={typeFilter}
+          onChange={(e) => setTypeFilter(e.target.value)}
+        >
           <option value="">All Types</option>
           <option value="Combat">Combat</option>
           <option value="Delivery">Delivery</option>
           <option value="Escort">Escort</option>
         </select>
-        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+        >
           <option value="">All Availability</option>
           <option value="available">Available</option>
           <option value="upcoming">Upcoming</option>
         </select>
       </div>
+
       <p className={styles.count}>Contracts ({contracts.length})</p>
+
       <div className={styles.cardGrid}>
         {contracts.map((contract) => (
           <ContractCard

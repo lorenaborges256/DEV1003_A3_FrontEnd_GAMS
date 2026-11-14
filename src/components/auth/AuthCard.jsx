@@ -1,4 +1,5 @@
 import styles from './AuthCard.module.scss';
+import gamsLogo from '../../assets/images/login/gams-logo.svg';
 
 /**
  * AuthCard - Shared split-screen layout shell for auth pages.
@@ -13,9 +14,11 @@ function AuthCard({ children, title, footerContent }) {
       <div className={styles.card}>
         {/* ── Left panel: branding ── */}
         <aside className={styles.branding} aria-label="Application branding">
-          <div className={styles.logoPlaceholder} aria-hidden="true" />
+          <img src={gamsLogo} alt="GAMS logo" className={styles.logo} />
           <p className={styles.appName}>GAMS</p>
-          <p className={styles.tagline}>Guild Availability Management System</p>
+          <p className={styles.tagline}>
+            Guild Availability Management System
+        </p>
         </aside>
 
         {/* ── Right panel: form area ── */}
