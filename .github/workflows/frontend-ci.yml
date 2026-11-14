@@ -2,24 +2,17 @@
 name: Frontend CI/CD
 
 on:
-  # Run CI and preview deployment on all branches except main
+  # Run on pushes to all branches
   push:
-    branches-ignore:
-      - main
+    branches:
+      - '**'
 
   # Validate pull requests targeting main
   pull_request:
     branches:
       - main
 
-  # Deploy production after a PR is merged into main
-  pull_request_target:
-    types:
-      - closed
-    branches:
-      - main
-
-# Cancel outdated workflow runs on the same branch
+# Cancel outdated runs for the same branch
 concurrency:
   group: frontend-${{ github.event.pull_request.head.ref || github.ref }}
   cancel-in-progress: true
@@ -110,14 +103,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
 
-    # Deploy previews from branch pushes.
-    # Deploy production only after a successful merge into main.
-    if: |
-      github.event_name == 'push' ||
-      (
-        github.event_name == 'pull_request_target' &&
-        github.event.pull_request.merged == true
-      )
+    # Deploy only after successful branch pushes.
+    # Pull requests are validation only.
+    if: github.event_name == 'push'
 
     env:
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
@@ -130,11 +118,9 @@ jobs:
           name: gams-frontend-build
           path: dist/
 
-      # Production deployment after successful PR merge
+      # Production deployment after merge into main
       - name: Deploy to Netlify Production
-        if: |
-          github.event_name == 'pull_request_target' &&
-          github.event.pull_request.merged == true
+        if: github.ref == 'refs/heads/main'
         run: |
           npx --yes netlify-cli@latest deploy \
             --dir=dist \
@@ -142,9 +128,9 @@ jobs:
             --prod \
             --message="GitHub Actions production deployment"
 
-      # Preview deployment from non-main branch pushes
+      # Preview deployment from all other branches
       - name: Deploy Netlify Preview
-        if: github.event_name == 'push'
+        if: github.ref != 'refs/heads/main'
         run: |
           npx --yes netlify-cli@latest deploy \
             --dir=dist \
